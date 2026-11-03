@@ -100,6 +100,12 @@ function renderAll() {
   $('#projects-preview').innerHTML = data.projects.filter((p) => p !== featured).slice(0, 3).map(projectCardSmall).join('');
   renderSkills();
   renderTimeline();
+  // İçerik yüklenince sayfa uzar: #iletisim ile gelindiyse bölüme tekrar git, menü vurgusunu yenile
+  if (!renderAll.done && location.hash === '#iletisim') {
+    document.getElementById('iletisim').scrollIntoView({ block: 'start' });
+  }
+  renderAll.done = true;
+  window.dispatchEvent(new Event('scroll'));
 }
 
 /* ---------- İletişim formu ---------- */
@@ -155,7 +161,37 @@ async function load() {
   renderAll();
 }
 
+/* ---------- Menüde aktif bölüm (scroll-spy) ----------
+   İletişim bölümü ekrandayken menüde "İletişim", değilse "Ana sayfa" vurgulanır. */
+function initNavSpy() {
+  const home = document.querySelector('[data-nav="home"]');
+  const contact = document.querySelector('[data-nav="contact"]');
+  const section = document.getElementById('iletisim');
+  if (!home || !contact || !section) return;
+  const setActive = (onContact) => {
+    if (onContact) { contact.setAttribute('aria-current', 'location'); home.removeAttribute('aria-current'); }
+    else { home.setAttribute('aria-current', 'page'); contact.removeAttribute('aria-current'); }
+  };
+  const check = () => {
+    const r = section.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    // Bölümün üst kenarı ekranın ortasını geçtiyse ya da sayfanın sonuna gelindiyse İletişim aktif
+    const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+    setActive(r.top < vh * 0.5 || atBottom);
+  };
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { check(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', check);
+  window.addEventListener('hashchange', check);
+  check();
+}
+
 initPage();
+initNavSpy();
 initTabs();
 initContact();
 initReveal();

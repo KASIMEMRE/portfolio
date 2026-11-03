@@ -63,7 +63,7 @@ p { margin: 0; }
 .nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 15px; }
 .nav a { color: var(--text-2); padding: 8px 12px; border-radius: 6px; }
 .nav a:hover { color: var(--text); background: var(--surface); }
-.nav a[aria-current="page"] { color: var(--text); font-weight: 600; background: var(--surface); }
+.nav a[aria-current] { color: var(--text); font-weight: 600; background: var(--surface); }
 .nav .nav-admin { border: 1px solid var(--border); margin-left: 6px; color: var(--text); }
 
 /* ---------- Buttons ---------- */
@@ -297,3 +297,6 @@ main.page { display: flex; flex-direction: column; gap: 104px; padding-bottom: 9
 .now-working strong, .now-working a { color: var(--text); font-weight: 600; }
 .now-working a:hover { color: var(--accent); }
 .now-working .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+/* Yapışkan menü, bağlantıyla gidilen bölümün başlığını örtmesin */
+section[id] { scroll-margin-top: 88px; }
