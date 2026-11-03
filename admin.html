@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Yönetim paneli — Kasım Emre</title>
+  <meta name="theme-color" content="#010409">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin">
+
+  <!-- Giriş ekranı -->
+  <div id="login-view" class="login-wrap" hidden>
+    <form id="login-form" class="login-card" novalidate>
+      <span class="logo">&lt;<span>KE</span> /&gt;</span>
+      <h1>Yönetim paneli</h1>
+      <p class="muted">Devam etmek için admin hesabınla giriş yap.</p>
+      <label class="field" for="l-email">E-posta<input id="l-email" type="email" autocomplete="username" required></label>
+      <label class="field" for="l-pass">Şifre<input id="l-pass" type="password" autocomplete="current-password" required></label>
+      <p id="login-error" class="form-error" role="alert" hidden></p>
+      <button type="submit" class="btn btn-green">Giriş yap</button>
+      <a href="index.html" class="muted" style="font-size: 13px">← Siteye dön</a>
+    </form>
+  </div>
+
+  <!-- Yetkisiz kullanıcı -->
+  <div id="denied-view" class="login-wrap" hidden>
+    <div class="login-card">
+      <h1>Yetkin yok</h1>
+      <p class="muted">Bu hesap admin listesinde değil. Farklı bir hesapla giriş yapmayı dene.</p>
+      <button type="button" class="btn" data-action="logout">Çıkış yap</button>
+    </div>
+  </div>
+
+  <!-- Panel -->
+  <div id="app-view" hidden>
+    <header class="admin-header">
+      <div class="inner">
+        <div class="left">
+          <a href="index.html" class="logo">&lt;<span>KE</span> /&gt;</a>
+          <span class="muted">Yönetim paneli</span>
+        </div>
+        <div class="right">
+          <a href="index.html" class="btn btn-sm" target="_blank" rel="noopener">Siteyi görüntüle ↗</a>
+          <button type="button" class="btn btn-sm" data-action="logout">Çıkış</button>
+          <span class="avatar" id="avatar" aria-hidden="true">KE</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+      <nav class="admin-nav" aria-label="Yönetim menüsü" id="admin-nav">
+        <button type="button" data-section="overview">Genel bakış</button>
+        <button type="button" data-section="projects">Projeler <span class="count" data-count="projects"></span></button>
+        <button type="button" data-section="skills">Yetenekler <span class="count" data-count="skills"></span></button>
+        <button type="button" data-section="journey">Yolculuk <span class="count" data-count="journey"></span></button>
+        <button type="button" data-section="messages">Mesajlar <span class="count" data-count="messages"></span></button>
+        <button type="button" data-section="profile">Profil</button>
+      </nav>
+      <main id="view" class="admin-main" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/admin.js"></script>
+</body>
+</html>
