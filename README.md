@@ -8,13 +8,21 @@ Saf HTML/CSS/JavaScript ile yazıldı; veritabanı, kimlik doğrulama ve güvenl
 | Sayfa | Dosya | İçerik |
 |---|---|---|
 | Ana sayfa | `index.html` | Hero, öne çıkan proje, proje özeti, yetenek grupları, yolculuk, iletişim formu |
-| Projeler | `projeler.html` | Arama, kategori filtresi, detaylı proje kartları (`?kategori=api&q=...` destekli) |
+| Projeler | `projeler.html` | Arama, kategori filtresi, proje kartları (`?kategori=api&q=...` destekli) |
+| Proje detayı | `proje.html?p=slug` | Detaylı açıklama, öne çıkan özellikler, mimari, teknolojiler, kod parçası |
 | Yetenekler | `yetenekler.html` | Alan filtresi, her teknolojinin kullanıldığı projeler |
 | Admin | `admin.html` | Giriş korumalı yönetim paneli |
 
+## Çift dil (TR / EN)
+
+- Başlıktaki **EN / TR** düğmesiyle dil değişir; seçim tarayıcıda hatırlanır, `?lang=en` ile bağlantı da verilebilir.
+- İlk ziyarette tarayıcı dili Türkçe ise Türkçe, değilse İngilizce açılır.
+- Sabit metinler `assets/js/i18n.js` sözlüğünde; veritabanı içerikleri `*_en` sütunlarında.
+- Bir alanın İngilizcesi boş bırakılırsa Türkçesi gösterilir.
+
 ## Admin paneli
 
-- **Projeler:** ekle, düzenle, sil, sırala, öne çıkar, gizle/yayınla, kod parçası ekle
+- **Projeler:** ekle, düzenle, sil, sırala, öne çıkar, gizle/yayınla; TR/EN kısa ve detaylı açıklama, özellikler, mimari, durum, yıl, kod parçası
 - **Yetenekler:** ekle, düzenle, sil, grup içinde sırala
 - **Yolculuk:** zaman çizelgesi kayıtları
 - **Mesajlar:** iletişim formundan gelenler; okundu/okunmadı, yanıtla, sil
@@ -70,12 +78,13 @@ Netlify, Vercel veya Cloudflare Pages'e de olduğu gibi yüklenebilir; derleme a
 2. `supabase/schema.sql` dosyasını SQL Editor'de çalıştır.
 3. Admin kullanıcını oluştur, e-postasını `admins` tablosuna ekle (dosyanın sonundaki yorum).
 4. `supabase/02_security_hardening.sql` dosyasını çalıştır (admin kaydını kullanıcı kimliğine bağlar ve yetkileri daraltır).
+5. `supabase/03_bilingual_and_details.sql` dosyasını çalıştır (İngilizce alanlar ve proje detay alanları).
 4. `assets/js/config.js` içindeki URL ve publishable anahtarı kendi projeninkilerle değiştir.
 
 ## Yapı
 
 ```
-├── index.html, projeler.html, yetenekler.html, admin.html
+├── index.html, projeler.html, proje.html, yetenekler.html, admin.html
 ├── assets/
 │   ├── css/style.css      # tema ve site bileşenleri
 │   ├── css/admin.css      # panel bileşenleri
@@ -85,9 +94,11 @@ Netlify, Vercel veya Cloudflare Pages'e de olduğu gibi yüklenebilir; derleme a
 │   └── js/
 │       ├── config.js      # Supabase bağlantısı
 │       ├── common.js      # istemci, yardımcılar, ortak bileşenler
-│       ├── home.js, projects.js, skills.js
+│       ├── i18n.js        # TR/EN sözlük ve dil seçimi
+│       ├── home.js, projects.js, project.js, skills.js
 │       └── admin.js       # panel uygulaması
 └── supabase/
     ├── schema.sql                  # tablolar, RLS kuralları
-    └── 02_security_hardening.sql   # yetki daraltma, admin bağlama, spam koruması
+    ├── 02_security_hardening.sql   # yetki daraltma, admin bağlama, spam koruması
+    └── 03_bilingual_and_details.sql # İngilizce alanlar, proje detayları
 ```

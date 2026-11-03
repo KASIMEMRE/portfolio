@@ -83,3 +83,6 @@ body.admin { font-size: 14px; line-height: 1.5; }
 .split > :first-child { flex: 999 1 400px; }
 .split > :last-child { flex: 1 1 300px; }
 .empty-row { padding: 24px 16px; color: var(--muted); text-align: center; }
+.form-section { font: 600 13px var(--font-mono); color: var(--accent); letter-spacing: .04em; text-transform: uppercase; padding-top: 6px; border-top: 1px solid var(--border-soft); }
+.form-section:first-child { border-top: 0; padding-top: 0; }
+.form-section .hint { text-transform: none; color: var(--muted); font-family: var(--font-body); letter-spacing: 0; }

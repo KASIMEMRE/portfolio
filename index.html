@@ -5,25 +5,26 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://pejucnuyhsmzaoxltazf.supabase.co wss://pejucnuyhsmzaoxltazf.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kasım Emre Şekersoy — Backend · .NET Geliştirici</title>
-  <meta name="description" content="Kasım Emre Şekersoy'un portfolyosu: .NET ile geliştirilen web API'ler, projeler ve yetenekler.">
+  <title>Kasım Emre Şekersoy — Backend · .NET</title>
+  <meta name="description" content="Kasım Emre Şekersoy — .NET backend & mobile developer. Web APIs, projects and skills. / .NET ile web API'ler, projeler ve yetenekler.">
   <meta name="theme-color" content="#0d1117">
-  <meta property="og:title" content="Kasım Emre Şekersoy — Portfolyo">
-  <meta property="og:description" content=".NET ile güvenli API'ler ve iş kuralı odaklı sistemler geliştiren web geliştirici.">
+  <meta property="og:title" content="Kasım Emre Şekersoy — Portfolio">
+  <meta property="og:description" content=".NET backend & mobile developer from Türkiye.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <a href="#main" class="sr-only">İçeriğe geç</a>
+  <a href="#main" class="sr-only" data-i18n="nav.skip">İçeriğe geç</a>
   <header class="site-header">
     <div class="container">
       <a href="index.html" class="logo">&lt;<span>KE</span> /&gt;</a>
-      <nav class="nav" aria-label="Ana menü">
-        <a href="index.html" aria-current="page">Ana sayfa</a>
-        <a href="projeler.html">Projeler</a>
-        <a href="yetenekler.html">Yetenekler</a>
-        <a href="index.html#iletisim">İletişim</a>
+      <nav class="nav" data-i18n-attr="aria-label:nav.menu" aria-label="Ana menü">
+        <a href="index.html" aria-current="page" data-i18n="nav.home">Ana sayfa</a>
+        <a href="projeler.html" data-i18n="nav.projects">Projeler</a>
+        <a href="yetenekler.html" data-i18n="nav.skills">Yetenekler</a>
+        <a href="#iletisim" data-i18n="nav.contact">İletişim</a>
+        <button type="button" class="lang-btn" data-lang-toggle>EN</button>
       </nav>
     </div>
   </header>
@@ -32,117 +33,119 @@
 
     <section class="hero">
       <div class="hero-text">
-        <span class="badge-available" data-available>Staj ve freelance tekliflerine açık</span>
-        <p class="mono muted">// merhaba, ben</p>
+        <span class="badge-available" data-available hidden data-i18n="hero.available">Staj ve freelance tekliflerine açık</span>
+        <p class="mono muted" data-i18n="hero.hello">// merhaba, ben</p>
         <h1 id="hero-name">Kasım Emre<br><span class="accent">Şekersoy</span></h1>
-        <p class="tagline">.NET ile sağlam backend'ler kuran,<br>Türkiye'den bir web geliştirici.</p>
-        <p class="bio" data-profile="bio">Necmettin Erbakan Üniversitesi'nde Yönetim Bilişim Sistemleri okuyorum.</p>
+        <p class="tagline" data-i18n="hero.tagline">.NET ile sağlam backend'ler kuran,
+Türkiye'den bir web geliştirici.</p>
+        <p class="bio" data-profile="bio"></p>
         <div class="hero-actions">
-          <a href="projeler.html" class="btn btn-primary">Projeleri incele</a>
-          <a href="#iletisim" class="btn">İletişime geç</a>
+          <a href="projeler.html" class="btn btn-primary" data-i18n="hero.cta.projects">Projeleri incele</a>
+          <a href="#iletisim" class="btn" data-i18n="hero.cta.contact">İletişime geç</a>
         </div>
         <div class="socials">
           <a data-link="github" href="https://github.com/KASIMEMRE" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a>
           <a data-link="linkedin" href="https://www.linkedin.com/in/kasimemre/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
           <a data-link="instagram" href="https://www.instagram.com/emre_skrsy/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5"/></svg></a>
-          <a data-link="email" href="#iletisim" aria-label="E-posta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+          <a data-link="email" href="#iletisim" data-i18n-attr="aria-label:form.email" aria-label="E-posta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
         </div>
       </div>
 
       <div class="editor">
-        <div class="editor-tabs" role="tablist" aria-label="Kod örneği">
+        <div class="editor-tabs" role="tablist" data-i18n-attr="aria-label:hero.code" aria-label="Kod örneği">
           <button class="editor-tab" role="tab" id="tab-dev" aria-selected="true" aria-controls="panel-dev">Developer.cs</button>
           <button class="editor-tab" role="tab" id="tab-prog" aria-selected="false" aria-controls="panel-prog" tabindex="-1">Program.cs</button>
         </div>
         <div id="panel-dev" role="tabpanel" aria-labelledby="tab-dev">
 <div class="editor-body"><span class="k">public record</span> <span class="t">Developer</span>(
   <span class="k">string</span> Name     = <span class="s">"<span data-code="name">Kasım Emre</span>"</span>,
-  <span class="k">string</span> Focus    = <span class="s">"<span data-code="title">Backend · .NET</span>"</span>,
-  <span class="k">string</span> School   = <span class="s">"NEÜ · YBS"</span>,
+  <span class="k">string</span> Focus    = <span class="s">"Backend · .NET · Mobile"</span>,
+  <span class="k">string</span> School   = <span class="s">"NEÜ · MIS"</span>,
   <span class="k">string</span> Location = <span class="s">"<span data-code="location">Kocaeli, TR</span>"</span>
 );
 
 <span class="c">// Everything with .NET Core</span>
 <span class="k">string</span>[] Stack = [
-  <span class="s">"C#"</span>, <span class="s">".NET 10"</span>, <span class="s">"EF Core"</span>, <span class="s">"SQL"</span>
+  <span class="s">"C#"</span>, <span class="s">".NET 10"</span>, <span class="s">"EF Core"</span>,
+  <span class="s">"React Native"</span>, <span class="s">"Supabase"</span>
 ];</div>
         </div>
         <div id="panel-prog" role="tabpanel" aria-labelledby="tab-prog" hidden>
 <div class="editor-body"><span class="k">var</span> me = <span class="k">new</span> <span class="t">Developer</span>();
 
-Console.WriteLine(<span class="s">$"Merhaba, ben {me.Name}"</span>);
-Console.WriteLine(<span class="s">$"Odak: {me.Focus}"</span>);</div>
+Console.WriteLine(<span class="s">$"Hello, I'm {me.Name}"</span>);
+Console.WriteLine(<span class="s">$"Focus: {me.Focus}"</span>);</div>
           <div class="editor-output">
-            <p class="label">ÇIKTI</p>
-            <p>Merhaba, ben <span data-code="name">Kasım Emre</span></p>
-            <p>Odak: <span data-code="title">Backend · .NET</span></p>
+            <p class="label" data-i18n="hero.output">ÇIKTI</p>
+            <p>Hello, I'm <span data-code="name">Kasım Emre</span></p>
+            <p>Focus: Backend · .NET · Mobile</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="stats reveal" aria-label="Kısa bilgiler">
-      <div class="stat"><strong id="stat-projects">–</strong><span>yayındaki proje</span></div>
-      <div class="stat"><strong id="stat-skills">–</strong><span>teknoloji &amp; yetkinlik</span></div>
-      <div class="stat"><strong>.NET 10</strong><span>ile geliştiriyorum</span></div>
-      <div class="stat"><strong>YBS</strong><span>Necmettin Erbakan Üni.</span></div>
+    <section class="stats reveal" data-i18n-attr="aria-label:stats.label" aria-label="Kısa bilgiler">
+      <div class="stat"><strong id="stat-projects">–</strong><span data-i18n="stats.projects">yayındaki proje</span></div>
+      <div class="stat"><strong id="stat-skills">–</strong><span data-i18n="stats.skills">teknoloji &amp; yetkinlik</span></div>
+      <div class="stat"><strong>.NET 10</strong><span data-i18n="stats.dotnet">ile geliştiriyorum</span></div>
+      <div class="stat"><strong>YBS / MIS</strong><span data-i18n="stats.school">Necmettin Erbakan Üni.</span></div>
     </section>
 
     <section class="section reveal" aria-labelledby="proj-h">
       <div class="section-head">
         <div>
-          <p class="kicker">01 / projeler</p>
-          <h2 class="section-title" id="proj-h">Neler geliştirdim</h2>
+          <p class="kicker" data-i18n="home.projects.kicker">01 / projeler</p>
+          <h2 class="section-title" id="proj-h" data-i18n="home.projects.title">Neler geliştirdim</h2>
         </div>
-        <a href="projeler.html">Tüm projeler →</a>
+        <a href="projeler.html" data-i18n="home.projects.all">Tüm projeler →</a>
       </div>
       <div id="featured"><div class="skeleton"></div></div>
       <div id="projects-preview" class="grid-cards"></div>
-      <a href="projeler.html" class="btn" style="align-self: center">Tüm projeleri gör →</a>
+      <a href="projeler.html" class="btn" style="align-self: center" data-i18n="home.projects.allBtn">Tüm projeleri gör →</a>
     </section>
 
     <section class="section reveal" aria-labelledby="skill-h">
       <div class="section-head">
         <div>
-          <p class="kicker">02 / yetenekler</p>
-          <h2 class="section-title" id="skill-h">Araç kutum</h2>
+          <p class="kicker" data-i18n="home.skills.kicker">02 / yetenekler</p>
+          <h2 class="section-title" id="skill-h" data-i18n="home.skills.title">Araç kutum</h2>
         </div>
-        <a href="yetenekler.html">Tüm yetenekler →</a>
+        <a href="yetenekler.html" data-i18n="home.skills.all">Tüm yetenekler →</a>
       </div>
       <div id="skills-preview" class="skill-groups"><div class="skeleton"></div></div>
     </section>
 
     <section class="journey reveal" aria-labelledby="journey-h">
       <div>
-        <p class="kicker">03 / yolculuk</p>
-        <h2 class="section-title" id="journey-h">Buraya nasıl geldim</h2>
+        <p class="kicker" data-i18n="home.journey.kicker">03 / yolculuk</p>
+        <h2 class="section-title" id="journey-h" data-i18n="home.journey.title">Buraya nasıl geldim</h2>
       </div>
       <ol id="timeline" class="timeline"></ol>
     </section>
 
     <section id="iletisim" class="contact reveal" aria-labelledby="contact-h">
       <div class="contact-info">
-        <p class="kicker">04 / iletişim</p>
-        <h2 class="section-title" id="contact-h">Birlikte bir şey geliştirelim</h2>
-        <p class="muted">Staj, ortak proje ya da bir soru. Mesajın doğrudan yönetim panelimdeki gelen kutusuna düşer.</p>
-        <a data-link="email" href="#" class="mono" data-profile="email">E-posta</a>
+        <p class="kicker" data-i18n="home.contact.kicker">04 / iletişim</p>
+        <h2 class="section-title" id="contact-h" data-i18n="home.contact.title">Birlikte bir şey geliştirelim</h2>
+        <p class="muted" data-i18n="home.contact.text">Staj, ortak proje ya da bir soru. Mesajın doğrudan yönetim panelimdeki gelen kutusuna düşer.</p>
+        <a data-link="email" href="#" class="mono" data-profile="email"></a>
       </div>
       <div class="contact-form">
         <div id="form-success" class="form-success" role="status" hidden>
-          <p><strong>Mesajın iletildi, teşekkürler!</strong></p>
-          <p style="font-size: 14px; margin-top: 4px">En kısa sürede dönüş yapacağım.</p>
-          <button type="button" id="again" class="btn btn-sm" style="margin-top: 12px">Yeni mesaj yaz</button>
+          <p><strong data-i18n="form.success">Mesajın iletildi, teşekkürler!</strong></p>
+          <p style="font-size: 14px; margin-top: 4px" data-i18n="form.successSub">En kısa sürede dönüş yapacağım.</p>
+          <button type="button" id="again" class="btn btn-sm" style="margin-top: 12px" data-i18n="form.again">Yeni mesaj yaz</button>
         </div>
         <form id="contact-form" novalidate>
           <div style="display: flex; flex-direction: column; gap: 14px">
             <div class="form-row">
-              <label class="field" for="c-name">Adın<input id="c-name" name="name" type="text" maxlength="120" autocomplete="name" required></label>
-              <label class="field" for="c-mail">E-posta<input id="c-mail" name="email" type="email" maxlength="200" autocomplete="email" required></label>
+              <label class="field" for="c-name"><span data-i18n="form.name">Adın</span><input id="c-name" name="name" type="text" maxlength="120" autocomplete="name" required></label>
+              <label class="field" for="c-mail"><span data-i18n="form.email">E-posta</span><input id="c-mail" name="email" type="email" maxlength="200" autocomplete="email" required></label>
             </div>
-            <label class="field" for="c-msg">Mesajın<textarea id="c-msg" name="body" rows="5" maxlength="5000" required></textarea></label>
-            <label class="hp" aria-hidden="true">Web sitesi<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+            <label class="field" for="c-msg"><span data-i18n="form.message">Mesajın</span><textarea id="c-msg" name="body" rows="5" maxlength="5000" required></textarea></label>
+            <label class="hp" aria-hidden="true">Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
             <p id="form-error" class="form-error" role="alert" hidden></p>
-            <button type="submit" class="btn btn-primary" style="align-self: flex-start">Mesajı gönder</button>
+            <button type="submit" class="btn btn-primary" style="align-self: flex-start" data-i18n="form.send">Mesajı gönder</button>
           </div>
         </form>
       </div>
@@ -152,8 +155,8 @@ Console.WriteLine(<span class="s">$"Odak: {me.Focus}"</span>);</div>
 
   <footer class="site-footer">
     <div class="container">
-      <span>© <span data-year>2026</span> <span data-profile="name">Kasım Emre Şekersoy</span> · .NET ve kahveyle yapıldı</span>
-      <nav aria-label="Sosyal bağlantılar">
+      <span>© <span data-year>2026</span> <span data-profile="name">Kasım Emre Şekersoy</span> · <span data-i18n="footer.made">.NET ve kahveyle yapıldı</span></span>
+      <nav data-i18n-attr="aria-label:nav.social" aria-label="Sosyal bağlantılar">
         <a data-link="github" href="https://github.com/KASIMEMRE" target="_blank" rel="noopener">GitHub</a>
         <a data-link="linkedin" href="https://www.linkedin.com/in/kasimemre/" target="_blank" rel="noopener">LinkedIn</a>
         <a data-link="instagram" href="https://www.instagram.com/emre_skrsy/" target="_blank" rel="noopener">Instagram</a>
@@ -162,7 +165,6 @@ Console.WriteLine(<span class="s">$"Odak: {me.Focus}"</span>);</div>
   </footer>
 
   <script src="assets/vendor/supabase-2.118.0.js"></script>
-
   <script type="module" src="assets/js/home.js"></script>
 </body>
 </html>

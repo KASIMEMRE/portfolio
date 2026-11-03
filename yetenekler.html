@@ -5,23 +5,24 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://pejucnuyhsmzaoxltazf.supabase.co wss://pejucnuyhsmzaoxltazf.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Yetenekler — Kasım Emre Şekersoy</title>
-  <meta name="description" content="Kasım Emre Şekersoy'un kullandığı teknolojiler ve hangi projelerde uyguladığı.">
+  <title>Yetenekler / Skills — Kasım Emre Şekersoy</title>
+  <meta name="description" content="Technologies Kasım Emre Şekersoy uses and where he applied them. / Kullandığı teknolojiler.">
   <meta name="theme-color" content="#0d1117">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <a href="#main" class="sr-only">İçeriğe geç</a>
+  <a href="#main" class="sr-only" data-i18n="nav.skip">İçeriğe geç</a>
   <header class="site-header">
     <div class="container">
       <a href="index.html" class="logo">&lt;<span>KE</span> /&gt;</a>
-      <nav class="nav" aria-label="Ana menü">
-        <a href="index.html">Ana sayfa</a>
-        <a href="projeler.html">Projeler</a>
-        <a href="yetenekler.html" aria-current="page">Yetenekler</a>
-        <a href="index.html#iletisim">İletişim</a>
+      <nav class="nav" data-i18n-attr="aria-label:nav.menu" aria-label="Ana menü">
+        <a href="index.html" data-i18n="nav.home">Ana sayfa</a>
+        <a href="projeler.html" data-i18n="nav.projects">Projeler</a>
+        <a href="yetenekler.html" aria-current="page" data-i18n="nav.skills">Yetenekler</a>
+        <a href="index.html#iletisim" data-i18n="nav.contact">İletişim</a>
+        <button type="button" class="lang-btn" data-lang-toggle>EN</button>
       </nav>
     </div>
   </header>
@@ -29,18 +30,18 @@
   <main id="main" class="container" style="display: flex; flex-direction: column; gap: 40px; padding-bottom: 96px">
     <section class="page-hero" style="flex-direction: row; flex-wrap: wrap; gap: 40px; align-items: flex-end">
       <div style="flex: 999 1 520px; display: flex; flex-direction: column; gap: 14px">
-        <p class="breadcrumb"><a href="index.html">Ana sayfa</a> / <span style="color: var(--text)">Yetenekler</span></p>
-        <p class="kicker">// yetenekler</p>
-        <h1>Araç kutum</h1>
-        <p class="lead">Kullandığım teknolojiler ve her birini hangi projede uyguladığım. Bir projeye tıklayarak detayına gidebilirsin.</p>
+        <p class="breadcrumb"><a href="index.html" data-i18n="nav.home">Ana sayfa</a> / <span style="color: var(--text)" data-i18n="nav.skills">Yetenekler</span></p>
+        <p class="kicker" data-i18n="skills.kicker">// yetenekler</p>
+        <h1 data-i18n="skills.title">Araç kutum</h1>
+        <p class="lead" data-i18n="skills.lead"></p>
       </div>
       <div class="stats" style="flex: 1 1 280px; grid-template-columns: repeat(2, minmax(0, 1fr))">
-        <div class="stat"><strong id="stat-total">–</strong><span>teknoloji</span></div>
-        <div class="stat"><strong id="stat-groups">–</strong><span>alan</span></div>
+        <div class="stat"><strong id="stat-total">–</strong><span data-i18n="skills.techs">teknoloji</span></div>
+        <div class="stat"><strong id="stat-groups">–</strong><span data-i18n="skills.areas">alan</span></div>
       </div>
     </section>
 
-    <div id="filters" class="filters" role="group" aria-label="Alana göre filtrele" style="padding-bottom: 8px; border-bottom: 1px solid var(--border-soft)"></div>
+    <div id="filters" class="filters" role="group" data-i18n-attr="aria-label:skills.filter" aria-label="Alana göre filtrele" style="padding-bottom: 8px; border-bottom: 1px solid var(--border-soft)"></div>
 
     <div id="groups" style="display: flex; flex-direction: column; gap: 56px">
       <div class="skeleton"></div>
@@ -50,12 +51,12 @@
 
     <section class="cta">
       <div>
-        <h2>Bu yetenekleri iş başında gör</h2>
-        <p class="muted" style="margin-top: 4px">Her teknolojinin gerçek bir projede nasıl kullanıldığını incele.</p>
+        <h2 data-i18n="skills.cta">Bu yetenekleri iş başında gör</h2>
+        <p class="muted" style="margin-top: 4px" data-i18n="skills.ctaSub">Her teknolojinin gerçek bir projede nasıl kullanıldığını incele.</p>
       </div>
       <div style="display: flex; flex-wrap: wrap; gap: 12px">
-        <a href="projeler.html" class="btn">Projelere git →</a>
-        <a href="index.html#iletisim" class="btn btn-primary">İletişime geç</a>
+        <a href="projeler.html" class="btn" data-i18n="skills.toProjects">Projelere git →</a>
+        <a href="index.html#iletisim" class="btn btn-primary" data-i18n="hero.cta.contact">İletişime geç</a>
       </div>
     </section>
   </main>
@@ -63,7 +64,7 @@
   <footer class="site-footer">
     <div class="container">
       <span>© <span data-year>2026</span> <span data-profile="name">Kasım Emre Şekersoy</span></span>
-      <nav aria-label="Sosyal bağlantılar">
+      <nav data-i18n-attr="aria-label:nav.social" aria-label="Sosyal bağlantılar">
         <a data-link="github" href="https://github.com/KASIMEMRE" target="_blank" rel="noopener">GitHub</a>
         <a data-link="linkedin" href="https://www.linkedin.com/in/kasimemre/" target="_blank" rel="noopener">LinkedIn</a>
         <a data-link="instagram" href="https://www.instagram.com/emre_skrsy/" target="_blank" rel="noopener">Instagram</a>
@@ -72,7 +73,6 @@
   </footer>
 
   <script src="assets/vendor/supabase-2.118.0.js"></script>
-
   <script type="module" src="assets/js/skills.js"></script>
 </body>
 </html>

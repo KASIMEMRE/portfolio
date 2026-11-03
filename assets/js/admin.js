@@ -221,28 +221,55 @@ function renderOverview() {
    Projeler
    ========================================================= */
 function projectForm(p) {
-  const v = p || { title: '', category: 'api', description: '', features: [], tech: [], github_url: '', demo_url: '', code_snippet: '', featured: false, visible: true };
+  const v = p || { title: '', title_en: '', slug: '', category: 'api', status: 'completed', year: '', description: '', description_en: '', features: [], features_en: [], details: '', details_en: '', architecture: [], architecture_en: [], tech: [], github_url: '', demo_url: '', code_snippet: '', featured: false, visible: true };
   const cats = Object.entries(CATEGORY_LABELS).map(([k, l]) => `<option value="${k}" ${v.category === k ? 'selected' : ''}>${esc(l)}</option>`).join('');
+  const statuses = [['completed', 'Tamamlandı'], ['in_progress', 'Geliştiriliyor']].map(([k, l]) => `<option value="${k}" ${v.status === k ? 'selected' : ''}>${l}</option>`).join('');
+  const lines = (a) => esc((a || []).join('\n'));
   return `
   <section class="panel form-panel" id="project-form-panel">
     <div class="panel-head"><h2>${p ? 'Projeyi düzenle: ' + esc(p.title) : 'Yeni proje'}</h2>${p ? '<button type="button" class="btn btn-sm" data-action="cancel-edit" data-table="projects">Vazgeç</button>' : ''}</div>
     <form class="panel-body" id="project-form" novalidate>
+      <h3 class="form-section">Genel</h3>
       <div class="form-grid">
-        <label class="field" for="f-title">Proje adı *<input id="f-title" name="title" required maxlength="120" value="${esc(v.title)}"></label>
+        <label class="field" for="f-title">Proje adı (TR) *<input id="f-title" name="title" required maxlength="120" value="${esc(v.title)}"></label>
+        <label class="field" for="f-title-en">Project name (EN)<span class="hint">Boşsa Türkçe ad kullanılır</span><input id="f-title-en" name="title_en" maxlength="120" value="${esc(v.title_en)}"></label>
+        <label class="field" for="f-slug">Bağlantı adı (slug)<span class="hint">proje.html?p=… · boşsa addan üretilir</span><input id="f-slug" name="slug" maxlength="80" pattern="[a-z0-9]+(-[a-z0-9]+)*" value="${esc(v.slug || '')}"></label>
         <label class="field" for="f-category">Kategori<select id="f-category" name="category">${cats}</select></label>
-        <label class="field full" for="f-desc">Kısa açıklama<textarea id="f-desc" name="description" rows="2" maxlength="500">${esc(v.description)}</textarea></label>
-        <label class="field" for="f-features">Öne çıkan özellikler<span class="hint">Her satıra bir özellik</span><textarea id="f-features" name="features" rows="4">${esc((v.features || []).join('\n'))}</textarea></label>
+        <label class="field" for="f-status">Durum<select id="f-status" name="status">${statuses}</select></label>
+        <label class="field" for="f-year">Yıl<input id="f-year" name="year" maxlength="20" placeholder="2026" value="${esc(v.year)}"></label>
         <label class="field" for="f-tech">Teknolojiler<span class="hint">Virgülle ayır: .NET 10, EF Core</span><input id="f-tech" name="tech" value="${esc((v.tech || []).join(', '))}"></label>
         <label class="field" for="f-github">GitHub bağlantısı<input id="f-github" name="github_url" type="url" placeholder="https://github.com/KASIMEMRE/..." value="${esc(v.github_url)}"></label>
         <label class="field" for="f-demo">Canlı demo bağlantısı<input id="f-demo" name="demo_url" type="url" placeholder="https://..." value="${esc(v.demo_url)}"></label>
-        <label class="field full" for="f-code">Kod parçası (öne çıkan kartta gösterilir)<textarea id="f-code" name="code_snippet" class="code" rows="6">${esc(v.code_snippet)}</textarea></label>
       </div>
+
+      <h3 class="form-section">Türkçe içerik</h3>
+      <div class="form-grid">
+        <label class="field full" for="f-desc">Kısa açıklama (kartlarda görünür)<textarea id="f-desc" name="description" rows="2" maxlength="1000">${esc(v.description)}</textarea></label>
+        <label class="field full" for="f-details">Detaylı açıklama (proje sayfası)<span class="hint">Paragrafları boş satırla ayır</span><textarea id="f-details" name="details" rows="7" maxlength="8000">${esc(v.details)}</textarea></label>
+        <label class="field" for="f-features">Öne çıkan özellikler<span class="hint">Her satıra bir özellik</span><textarea id="f-features" name="features" rows="5">${lines(v.features)}</textarea></label>
+        <label class="field" for="f-arch">Mimari / katmanlar<span class="hint">Her satıra bir katman — "Katman: açıklama"</span><textarea id="f-arch" name="architecture" rows="5">${lines(v.architecture)}</textarea></label>
+      </div>
+
+      <h3 class="form-section">English content <span class="hint">(boş bırakılan alanlarda Türkçe gösterilir)</span></h3>
+      <div class="form-grid">
+        <label class="field full" for="f-desc-en">Short description<textarea id="f-desc-en" name="description_en" rows="2" maxlength="1000">${esc(v.description_en)}</textarea></label>
+        <label class="field full" for="f-details-en">Detailed description<span class="hint">Separate paragraphs with a blank line</span><textarea id="f-details-en" name="details_en" rows="7" maxlength="8000">${esc(v.details_en)}</textarea></label>
+        <label class="field" for="f-features-en">Key features<span class="hint">One per line</span><textarea id="f-features-en" name="features_en" rows="5">${lines(v.features_en)}</textarea></label>
+        <label class="field" for="f-arch-en">Architecture / layers<span class="hint">One per line — "Layer: description"</span><textarea id="f-arch-en" name="architecture_en" rows="5">${lines(v.architecture_en)}</textarea></label>
+      </div>
+
+      <h3 class="form-section">Kod parçası</h3>
+      <label class="field" for="f-code">Öne çıkan kartta ve proje sayfasında gösterilir<textarea id="f-code" name="code_snippet" class="code" rows="8" maxlength="4000">${esc(v.code_snippet)}</textarea></label>
+
       <div style="display:flex;gap:20px;flex-wrap:wrap">
         <label class="check" for="f-featured"><input id="f-featured" name="featured" type="checkbox" ${v.featured ? 'checked' : ''}>Ana sayfada öne çıkar</label>
         <label class="check" for="f-visible"><input id="f-visible" name="visible" type="checkbox" ${v.visible ? 'checked' : ''}>Sitede yayınla</label>
       </div>
       <p class="form-error" id="project-error" role="alert" hidden></p>
-      <div class="form-actions"><button type="submit" class="btn btn-green">${p ? 'Değişiklikleri kaydet' : 'Projeyi ekle'}</button></div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-green">${p ? 'Değişiklikleri kaydet' : 'Projeyi ekle'}</button>
+        ${p && p.slug ? `<a class="btn" href="proje.html?p=${esc(p.slug)}" target="_blank" rel="noopener">Sayfayı görüntüle ↗</a>` : ''}
+      </div>
     </form>
   </section>`;
 }
@@ -276,20 +303,34 @@ function renderProjects() {
 async function submitProject(form) {
   const fd = new FormData(form);
   const err = $('#project-error');
+  const str = (k) => String(fd.get(k) || '').trim();
   const data = {
-    title: String(fd.get('title')).trim(),
-    category: String(fd.get('category')),
-    description: String(fd.get('description')).trim(),
+    title: str('title'),
+    title_en: str('title_en'),
+    slug: str('slug').toLowerCase() || slugify(str('title')),
+    category: str('category'),
+    status: str('status') || 'completed',
+    year: str('year'),
+    description: str('description'),
+    description_en: str('description_en'),
+    details: str('details'),
+    details_en: str('details_en'),
     features: splitList(fd.get('features'), /\n/),
+    features_en: splitList(fd.get('features_en'), /\n/),
+    architecture: splitList(fd.get('architecture'), /\n/),
+    architecture_en: splitList(fd.get('architecture_en'), /\n/),
     tech: splitList(fd.get('tech'), ','),
-    github_url: String(fd.get('github_url')).trim(),
-    demo_url: String(fd.get('demo_url')).trim(),
-    code_snippet: String(fd.get('code_snippet')).replace(/\s+$/, ''),
+    github_url: str('github_url'),
+    demo_url: str('demo_url'),
+    code_snippet: String(fd.get('code_snippet') || '').replace(/\s+$/, ''),
     featured: fd.get('featured') === 'on',
     visible: fd.get('visible') === 'on'
   };
-  if (!data.title) { err.textContent = 'Proje adı boş olamaz.'; err.hidden = false; return; }
-  if (!validUrl(data.github_url) || !validUrl(data.demo_url)) { err.textContent = 'Bağlantılar https:// ile başlamalı.'; err.hidden = false; return; }
+  const fail = (m) => { err.textContent = m; err.hidden = false; };
+  if (!data.title) return fail('Proje adı boş olamaz.');
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(data.slug)) return fail('Bağlantı adı yalnızca küçük harf, rakam ve tire içerebilir (ör. cinemabooking-api).');
+  if (state.projects.some((x) => x.slug === data.slug && x.id !== state.editing.projects)) return fail('Bu bağlantı adı başka bir projede kullanılıyor.');
+  if (!validUrl(data.github_url) || !validUrl(data.demo_url)) return fail('Bağlantılar https:// ile başlamalı.');
   const id = state.editing.projects;
   let ok;
   if (id) ok = await run(supabase.from('projects').update(data).eq('id', id), 'Proje güncellendi');
@@ -299,11 +340,19 @@ async function submitProject(form) {
   await reload('projects');
 }
 
+/** Türkçe karakterleri dönüştürerek URL dostu ad üretir. */
+function slugify(text) {
+  const map = { ç: 'c', ğ: 'g', ı: 'i', i: 'i', ö: 'o', ş: 's', ü: 'u' };
+  return String(text).toLocaleLowerCase('tr').replace(/[çğıiöşü]/g, (c) => map[c] || c)
+    .normalize('NFKD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
+}
+
 /* =========================================================
    Yetenekler
    ========================================================= */
 function skillForm(s) {
-  const v = s || { name: '', abbr: '', group_name: 'backend', description: '', used_in: [], visible: true };
+  const v = s || { name: '', name_en: '', abbr: '', group_name: 'backend', description: '', description_en: '', used_in: [], visible: true };
   const groups = Object.entries(GROUP_LABELS).map(([k, l]) => `<option value="${k}" ${v.group_name === k ? 'selected' : ''}>${esc(l)}</option>`).join('');
   const projectNames = state.projects.map((p) => esc(p.title)).join(', ');
   return `
@@ -314,7 +363,9 @@ function skillForm(s) {
         <label class="field" for="s-name">Ad *<input id="s-name" name="name" required maxlength="80" value="${esc(v.name)}"></label>
         <label class="field" for="s-abbr">Kısaltma (ikon)<span class="hint">2–3 harf, ör. EF</span><input id="s-abbr" name="abbr" maxlength="4" value="${esc(v.abbr)}"></label>
         <label class="field" for="s-group">Alan<select id="s-group" name="group_name">${groups}</select></label>
-        <label class="field full" for="s-desc">Açıklama<textarea id="s-desc" name="description" rows="2" maxlength="300">${esc(v.description)}</textarea></label>
+        <label class="field" for="s-name-en">Name (EN)<span class="hint">Boşsa Türkçe ad kullanılır</span><input id="s-name-en" name="name_en" maxlength="80" value="${esc(v.name_en)}"></label>
+        <label class="field full" for="s-desc">Açıklama (TR)<textarea id="s-desc" name="description" rows="2" maxlength="500">${esc(v.description)}</textarea></label>
+        <label class="field full" for="s-desc-en">Description (EN)<textarea id="s-desc-en" name="description_en" rows="2" maxlength="500">${esc(v.description_en)}</textarea></label>
         <label class="field full" for="s-used">Kullandığım yerler<span class="hint">Virgülle ayır. Mevcut projeler: ${projectNames}</span><input id="s-used" name="used_in" value="${esc((v.used_in || []).join(', '))}"></label>
       </div>
       <label class="check" for="s-visible"><input id="s-visible" name="visible" type="checkbox" ${v.visible ? 'checked' : ''}>Sitede göster</label>
@@ -354,6 +405,8 @@ async function submitSkill(form) {
   const err = $('#skill-error');
   const data = {
     name: String(fd.get('name')).trim(),
+    name_en: String(fd.get('name_en') || '').trim(),
+    description_en: String(fd.get('description_en') || '').trim(),
     abbr: String(fd.get('abbr')).trim(),
     group_name: String(fd.get('group_name')),
     description: String(fd.get('description')).trim(),
@@ -379,7 +432,7 @@ async function submitSkill(form) {
    ========================================================= */
 function renderJourney() {
   const editing = state.journey.find((j) => j.id === state.editing.journey) || null;
-  const v = editing || { period: '', title: '', subtitle: '' };
+  const v = editing || { period: '', title: '', subtitle: '', period_en: '', title_en: '', subtitle_en: '' };
   const rows = state.journey.map((j, i) => `
     <div class="row row-journey">
       <span class="order-btns"><button type="button" data-move="journey" data-id="${j.id}" data-dir="-1" aria-label="${esc(j.title)} yukarı taşı" ${i === 0 ? 'disabled' : ''}>↑</button><button type="button" data-move="journey" data-id="${j.id}" data-dir="1" aria-label="${esc(j.title)} aşağı taşı" ${i === state.journey.length - 1 ? 'disabled' : ''}>↓</button></span>
@@ -400,6 +453,9 @@ function renderJourney() {
           <label class="field" for="j-period">Dönem<span class="hint">ör. 2024 – DEVAM EDİYOR</span><input id="j-period" name="period" maxlength="60" value="${esc(v.period)}"></label>
           <label class="field" for="j-title">Başlık *<input id="j-title" name="title" required maxlength="120" value="${esc(v.title)}"></label>
           <label class="field full" for="j-sub">Alt başlık<input id="j-sub" name="subtitle" maxlength="200" value="${esc(v.subtitle)}"></label>
+          <label class="field" for="j-period-en">Period (EN)<input id="j-period-en" name="period_en" maxlength="60" value="${esc(v.period_en)}"></label>
+          <label class="field" for="j-title-en">Title (EN)<input id="j-title-en" name="title_en" maxlength="120" value="${esc(v.title_en)}"></label>
+          <label class="field full" for="j-sub-en">Subtitle (EN)<input id="j-sub-en" name="subtitle_en" maxlength="200" value="${esc(v.subtitle_en)}"></label>
         </div>
         <p class="form-error" id="journey-error" role="alert" hidden></p>
         <div class="form-actions"><button type="submit" class="btn btn-green">${editing ? 'Kaydet' : 'Ekle'}</button></div>
@@ -409,7 +465,8 @@ function renderJourney() {
 
 async function submitJourney(form) {
   const fd = new FormData(form);
-  const data = { period: String(fd.get('period')).trim(), title: String(fd.get('title')).trim(), subtitle: String(fd.get('subtitle')).trim() };
+  const data = {};
+  ['period', 'title', 'subtitle', 'period_en', 'title_en', 'subtitle_en'].forEach((k) => { data[k] = String(fd.get(k) || '').trim(); });
   if (!data.title) { const err = $('#journey-error'); err.textContent = 'Başlık boş olamaz.'; err.hidden = false; return; }
   const id = state.editing.journey;
   const ok = id
@@ -474,7 +531,7 @@ function renderProfile() {
           <div class="form-grid">
             ${f('p-name', 'Ad soyad *', 'name', 'required maxlength="80"')}
             ${f('p-title', 'Ünvan', 'title', 'maxlength="80"')}
-            <label class="field full" for="p-bio">Kısa bio<textarea id="p-bio" name="bio" rows="4" maxlength="600">${esc(p.bio)}</textarea></label>
+            <label class="field full" for="p-bio">Kısa bio<textarea id="p-bio" name="bio" rows="4" maxlength="1000">${esc(p.bio)}</textarea></label>
             ${f('p-location', 'Konum', 'location', 'maxlength="80"')}
             ${f('p-email', 'İletişim e-postası', 'email', 'type="email" maxlength="200"')}
             ${f('p-github', 'GitHub', 'github_url', 'type="url"')}
@@ -482,6 +539,14 @@ function renderProfile() {
             ${f('p-instagram', 'Instagram', 'instagram_url', 'type="url"')}
             ${f('p-learning', 'Şu an öğreniyorum', 'learning', 'maxlength="80" placeholder="ör. Docker"')}
             ${f('p-goal', 'Sıradaki hedef', 'next_goal', 'maxlength="80" placeholder="ör. Mikroservis mimarisi"')}
+          </div>
+          <h3 class="form-section">English <span class="hint">(boş bırakılan alanlarda Türkçe gösterilir)</span></h3>
+          <div class="form-grid">
+            ${f('p-title-en', 'Title (EN)', 'title_en', 'maxlength="80"')}
+            ${f('p-location-en', 'Location (EN)', 'location_en', 'maxlength="80"')}
+            <label class="field full" for="p-bio-en">Short bio (EN)<textarea id="p-bio-en" name="bio_en" rows="4" maxlength="1000">${esc(p.bio_en)}</textarea></label>
+            ${f('p-learning-en', 'Currently learning (EN)', 'learning_en', 'maxlength="80"')}
+            ${f('p-goal-en', 'Next goal (EN)', 'next_goal_en', 'maxlength="80"')}
           </div>
           <label class="check" for="p-available"><input id="p-available" name="available" type="checkbox" ${p.available ? 'checked' : ''}>“Tekliflere açık” rozetini göster</label>
           <p class="form-error" id="profile-error" role="alert" hidden></p>
@@ -514,7 +579,7 @@ async function submitProfile(form) {
   const fd = new FormData(form);
   const err = $('#profile-error');
   const data = {};
-  ['name', 'title', 'bio', 'location', 'email', 'github_url', 'linkedin_url', 'instagram_url', 'learning', 'next_goal'].forEach((k) => { data[k] = String(fd.get(k) || '').trim(); });
+  ['name', 'title', 'bio', 'location', 'email', 'github_url', 'linkedin_url', 'instagram_url', 'learning', 'next_goal', 'title_en', 'bio_en', 'location_en', 'learning_en', 'next_goal_en'].forEach((k) => { data[k] = String(fd.get(k) || '').trim(); });
   data.available = fd.get('available') === 'on';
   data.updated_at = new Date().toISOString();
   if (!data.name) { err.textContent = 'Ad soyad boş olamaz.'; err.hidden = false; return; }

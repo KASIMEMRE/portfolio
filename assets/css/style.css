@@ -250,3 +250,44 @@ main.page { display: flex; flex-direction: column; gap: 104px; padding-bottom: 9
   .featured-code { border-left: 0; border-top: 1px solid var(--border); }
   .nav .nav-admin { margin-left: 0; }
 }
+
+/* ---------- Dil düğmesi ---------- */
+.lang-btn { min-height: 36px; min-width: 44px; margin-left: 6px; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text); font: 600 13px var(--font-mono); cursor: pointer; }
+.lang-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.hero .tagline { white-space: pre-line; }
+.badge-progress { font: 700 11px var(--font-mono); color: var(--cyan); border: 1px solid var(--cyan); padding: 2px 8px; border-radius: 4px; letter-spacing: .03em; }
+
+/* Kartın tamamı tıklanabilir */
+.card-link { position: relative; }
+.card-link h3 a { color: var(--text); }
+.card-link .stretched::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.card-link:hover h3 a { color: var(--accent); }
+.title-link { color: var(--text); }
+.title-link:hover { color: var(--accent); }
+
+/* ---------- Proje detay sayfası ---------- */
+.detail-hero .lead { font-size: 19px; color: var(--text-2); max-width: 760px; }
+.detail-hero .project-links { margin-top: 8px; }
+.detail-grid { display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; }
+.detail-main { flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 40px; }
+.detail-side { flex: 1 1 280px; display: flex; flex-direction: column; gap: 16px; position: sticky; top: 88px; }
+@media (max-width: 900px) { .detail-side { position: static; } }
+.detail-block { display: flex; flex-direction: column; gap: 16px; }
+.detail-block h2, .side-card h2 { font: 700 24px var(--font-display); }
+.side-card h2 { font-size: 16px; font-family: var(--font-body); }
+.prose { display: flex; flex-direction: column; gap: 14px; color: var(--text-2); font-size: 17px; line-height: 1.75; max-width: 760px; }
+.arch-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.arch-list li { display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 14px 18px; border-bottom: 1px solid var(--border-soft); }
+.arch-list li:last-child { border-bottom: 0; }
+.arch-list strong { font-family: var(--font-mono); font-size: 14px; color: var(--cyan); min-width: 150px; }
+.arch-list span { color: var(--text-2); flex: 1 1 260px; }
+.code-block { margin: 0; padding: 24px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg-deep); font: 13px/1.85 var(--font-mono); color: var(--text-2); white-space: pre; overflow-x: auto; }
+.side-card { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.meta { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.meta div { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--border-soft); padding-bottom: 10px; }
+.meta div:last-child { border-bottom: 0; padding-bottom: 0; }
+.meta dt { color: var(--muted); font-size: 14px; }
+.meta dd { margin: 0; font-weight: 600; }
+
+#project { display: flex; flex-direction: column; gap: 48px; }

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://pejucnuyhsmzaoxltazf.supabase.co wss://pejucnuyhsmzaoxltazf.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proje / Project — Kasım Emre Şekersoy</title>
+  <meta name="description" content="Project details: architecture, features and tech stack. / Proje detayları.">
+  <meta name="theme-color" content="#0d1117">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/fonts.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <a href="#main" class="sr-only" data-i18n="nav.skip">İçeriğe geç</a>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="logo">&lt;<span>KE</span> /&gt;</a>
+      <nav class="nav" data-i18n-attr="aria-label:nav.menu" aria-label="Ana menü">
+        <a href="index.html" data-i18n="nav.home">Ana sayfa</a>
+        <a href="projeler.html" aria-current="page" data-i18n="nav.projects">Projeler</a>
+        <a href="yetenekler.html" data-i18n="nav.skills">Yetenekler</a>
+        <a href="index.html#iletisim" data-i18n="nav.contact">İletişim</a>
+        <button type="button" class="lang-btn" data-lang-toggle>EN</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container" style="display: flex; flex-direction: column; gap: 48px; padding-bottom: 96px">
+    <div id="project"><div class="skeleton" style="margin-top: 56px; min-height: 320px"></div></div>
+
+    <section id="others-wrap" class="section" hidden aria-labelledby="others-h">
+      <div class="section-head">
+        <h2 class="section-title" id="others-h" data-i18n="project.others">Diğer projeler</h2>
+        <a href="projeler.html" data-i18n="home.projects.all">Tüm projeler →</a>
+      </div>
+      <div id="others" class="grid-cards"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© <span data-year>2026</span> <span data-profile="name">Kasım Emre Şekersoy</span></span>
+      <nav data-i18n-attr="aria-label:nav.social" aria-label="Sosyal bağlantılar">
+        <a data-link="github" href="https://github.com/KASIMEMRE" target="_blank" rel="noopener">GitHub</a>
+        <a data-link="linkedin" href="https://www.linkedin.com/in/kasimemre/" target="_blank" rel="noopener">LinkedIn</a>
+        <a data-link="instagram" href="https://www.instagram.com/emre_skrsy/" target="_blank" rel="noopener">Instagram</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="assets/vendor/supabase-2.118.0.js"></script>
+  <script type="module" src="assets/js/project.js"></script>
+</body>
+</html>
