@@ -100,12 +100,32 @@ function renderAll() {
   $('#projects-preview').innerHTML = data.projects.filter((p) => p !== featured).slice(0, 3).map(projectCardSmall).join('');
   renderSkills();
   renderTimeline();
-  // İçerik yüklenince sayfa uzar: #iletisim ile gelindiyse bölüme tekrar git, menü vurgusunu yenile
-  if (!renderAll.done && location.hash === '#iletisim') {
-    document.getElementById('iletisim').scrollIntoView({ block: 'start' });
-  }
-  renderAll.done = true;
+  if (!renderAll.done) { renderAll.done = true; settleContactJump(); }
   window.dispatchEvent(new Event('scroll'));
+}
+
+/* ---------- Başka sayfadan "İletişim" ile gelme ----------
+   İçerik veritabanından yüklendikçe sayfa uzar. Bu yüzden tarayıcının erken atlamasına
+   güvenmek yerine, içerik ve fontlar hazır olunca TEK SEFERDE ve animasyonsuz gidilir. */
+const wantsContact = new URLSearchParams(location.search).get('to') === 'iletisim' || location.hash === '#iletisim';
+if (wantsContact && 'scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+function goToContact() {
+  const section = document.getElementById('iletisim');
+  if (!section) return;
+  section.classList.add('in'); // giriş animasyonunu beklemeden görünür olsun
+  const header = document.querySelector('.site-header');
+  const offset = (header ? header.offsetHeight : 70) + 16;
+  const y = section.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+  history.replaceState(null, '', 'index.html#iletisim');
+  window.dispatchEvent(new Event('scroll'));
+}
+
+async function settleContactJump() {
+  if (!wantsContact) return;
+  try { await document.fonts.ready; } catch (_) { /* yok say */ }
+  requestAnimationFrame(() => requestAnimationFrame(goToContact));
 }
 
 /* ---------- İletişim formu ---------- */
@@ -160,6 +180,9 @@ async function load() {
   if (projectsRes.error || skillsRes.error) console.error(projectsRes.error || skillsRes.error);
   renderAll();
 }
+
+// Ağ çok yavaşsa kullanıcıyı bekletmemek için güvenlik payı
+if (wantsContact) setTimeout(() => { if (!renderAll.done) goToContact(); }, 2500);
 
 /* ---------- Menüde aktif bölüm (scroll-spy) ----------
    İletişim bölümü ekrandayken menüde "İletişim", değilse "Ana sayfa" vurgulanır. */
