@@ -13,19 +13,20 @@ const DICT = {
 
     'hero.available': 'Staj ve freelance tekliflerine açık',
     'hero.hello': '// merhaba, ben',
-    'hero.tagline': ".NET ile sağlam backend'ler kuran,\nTürkiye'den bir web geliştirici.",
+    'hero.tagline': "Kurumsal yazılımları birbirine bağlayan,\n.NET ile backend geliştiren bir yazılımcı.",
+    'hero.now': 'Şu an', 'hero.at': '·',
     'hero.cta.projects': 'Projeleri incele', 'hero.cta.contact': 'İletişime geç',
     'hero.code': 'Kod örneği', 'hero.output': 'ÇIKTI', 'hero.out.hello': 'Merhaba, ben', 'hero.out.focus': 'Odak:',
 
     'stats.label': 'Kısa bilgiler', 'stats.projects': 'yayındaki proje', 'stats.skills': 'teknoloji & yetkinlik',
-    'stats.dotnet': 'ile geliştiriyorum', 'stats.school': 'Necmettin Erbakan Üni.',
+    'stats.dotnet': 'entegrasyonları', 'stats.school': 'YBS mezunu · NEÜ',
 
     'home.projects.kicker': '01 / projeler', 'home.projects.title': 'Neler geliştirdim',
     'home.projects.all': 'Tüm projeler →', 'home.projects.allBtn': 'Tüm projeleri gör →',
     'home.skills.kicker': '02 / yetenekler', 'home.skills.title': 'Araç kutum', 'home.skills.all': 'Tüm yetenekler →',
     'home.journey.kicker': '03 / yolculuk', 'home.journey.title': 'Buraya nasıl geldim',
     'home.contact.kicker': '04 / iletişim', 'home.contact.title': 'Birlikte bir şey geliştirelim',
-    'home.contact.text': 'Staj, ortak proje ya da bir soru. Mesajın doğrudan yönetim panelimdeki gelen kutusuna düşer.',
+    'home.contact.text': 'Bir entegrasyon ihtiyacı, ortak proje ya da sadece bir soru. Mesajın doğrudan yönetim panelimdeki gelen kutusuna düşer.',
     'learning': 'Şu an öğreniyorum', 'nextGoal': 'Sıradaki hedef',
 
     'form.name': 'Adın', 'form.email': 'E-posta', 'form.message': 'Mesajın', 'form.send': 'Mesajı gönder',
@@ -60,6 +61,7 @@ const DICT = {
     'skills.toProjects': 'Projelere git →',
 
     'cat.api': 'Web API', 'cat.cli': 'CLI', 'cat.app': 'Uygulama', 'cat.web': 'Web', 'cat.mobile': 'Mobil',
+    'group.enterprise': 'Kurumsal & entegrasyon', 'intro.enterprise': 'İş hayatımın merkezi: kalite yönetim yazılımları ve bunları ERP / üretim sistemlerine bağlayan entegrasyonlar.',
     'group.backend': 'Backend', 'group.data': 'Veri', 'group.mobile': 'Mobil', 'group.web': 'Frontend & araçlar', 'group.approach': 'Yaklaşım',
     'intro.backend': 'Projelerimin omurgası: API tasarımı, iş kuralları ve güvenlik.',
     'intro.data': 'Veriyi modellemek, sorgulamak, güvenle saklamak.',
@@ -67,7 +69,7 @@ const DICT = {
     'intro.web': 'Arayüz tarafı ve günlük geliştirme araçları.',
     'intro.approach': 'Yönetim Bilişim Sistemleri eğitiminden gelen bakış açısı.',
 
-    'footer.made': '.NET ve kahveyle yapıldı', 'thisPortfolio': 'Bu portfolyo', 'allProjects': 'Tüm projeler'
+    'footer.made': '.NET ve kahveyle yapıldı', 'thisPortfolio': 'Bu portfolyo', 'allProjects': 'Tüm projeler', 'workplace': 'İş deneyimi'
   },
   en: {
     'nav.home': 'Home', 'nav.projects': 'Projects', 'nav.skills': 'Skills', 'nav.contact': 'Contact',
@@ -76,19 +78,20 @@ const DICT = {
 
     'hero.available': 'Open to internships and freelance work',
     'hero.hello': '// hi, I am',
-    'hero.tagline': 'A web developer from Türkiye\nwho builds solid backends with .NET.',
+    'hero.tagline': 'A developer who connects enterprise software\nand builds backends with .NET.',
+    'hero.now': 'Currently', 'hero.at': '·',
     'hero.cta.projects': 'Explore projects', 'hero.cta.contact': 'Get in touch',
     'hero.code': 'Code sample', 'hero.output': 'OUTPUT', 'hero.out.hello': "Hi, I'm", 'hero.out.focus': 'Focus:',
 
     'stats.label': 'Quick facts', 'stats.projects': 'published projects', 'stats.skills': 'technologies & skills',
-    'stats.dotnet': 'is what I build with', 'stats.school': 'Necmettin Erbakan Univ.',
+    'stats.dotnet': 'integrations', 'stats.school': 'MIS graduate · NEU',
 
     'home.projects.kicker': '01 / projects', 'home.projects.title': "What I've built",
     'home.projects.all': 'All projects →', 'home.projects.allBtn': 'See all projects →',
     'home.skills.kicker': '02 / skills', 'home.skills.title': 'My toolbox', 'home.skills.all': 'All skills →',
     'home.journey.kicker': '03 / journey', 'home.journey.title': 'How I got here',
     'home.contact.kicker': '04 / contact', 'home.contact.title': "Let's build something together",
-    'home.contact.text': 'An internship, a project or just a question — your message lands straight in my admin inbox.',
+    'home.contact.text': 'An integration need, a project or just a question — your message lands straight in my admin inbox.',
     'learning': 'Currently learning', 'nextGoal': 'Next goal',
 
     'form.name': 'Your name', 'form.email': 'Email', 'form.message': 'Your message', 'form.send': 'Send message',
@@ -123,6 +126,7 @@ const DICT = {
     'skills.toProjects': 'Go to projects →',
 
     'cat.api': 'Web API', 'cat.cli': 'CLI', 'cat.app': 'Application', 'cat.web': 'Web', 'cat.mobile': 'Mobile',
+    'group.enterprise': 'Enterprise & integration', 'intro.enterprise': 'The core of my day job: quality management software and the integrations that connect it to ERP and manufacturing systems.',
     'group.backend': 'Backend', 'group.data': 'Data', 'group.mobile': 'Mobile', 'group.web': 'Frontend & tools', 'group.approach': 'Approach',
     'intro.backend': 'The backbone of my projects: API design, business rules and security.',
     'intro.data': 'Modelling, querying and safely storing data.',
@@ -130,7 +134,7 @@ const DICT = {
     'intro.web': 'The interface side and everyday development tools.',
     'intro.approach': 'A perspective shaped by studying Management Information Systems.',
 
-    'footer.made': 'Built with .NET and coffee', 'thisPortfolio': 'This portfolio', 'allProjects': 'All projects'
+    'footer.made': 'Built with .NET and coffee', 'thisPortfolio': 'This portfolio', 'allProjects': 'All projects', 'workplace': 'Work experience'
   }
 };
 

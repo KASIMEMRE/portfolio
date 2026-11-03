@@ -531,6 +531,9 @@ function renderProfile() {
           <div class="form-grid">
             ${f('p-name', 'Ad soyad *', 'name', 'required maxlength="80"')}
             ${f('p-title', 'Ünvan', 'title', 'maxlength="80"')}
+            ${f('p-company', 'Şirket', 'company', 'maxlength="80" placeholder="ör. Systek Bilişim"')}
+            ${f('p-company-url', 'Şirket web sitesi', 'company_url', 'type="url" placeholder="https://..."')}
+            ${f('p-job', 'Pozisyon', 'job_title', 'maxlength="120"')}
             <label class="field full" for="p-bio">Kısa bio<textarea id="p-bio" name="bio" rows="4" maxlength="1000">${esc(p.bio)}</textarea></label>
             ${f('p-location', 'Konum', 'location', 'maxlength="80"')}
             ${f('p-email', 'İletişim e-postası', 'email', 'type="email" maxlength="200"')}
@@ -543,6 +546,7 @@ function renderProfile() {
           <h3 class="form-section">English <span class="hint">(boş bırakılan alanlarda Türkçe gösterilir)</span></h3>
           <div class="form-grid">
             ${f('p-title-en', 'Title (EN)', 'title_en', 'maxlength="80"')}
+            ${f('p-job-en', 'Position (EN)', 'job_title_en', 'maxlength="120"')}
             ${f('p-location-en', 'Location (EN)', 'location_en', 'maxlength="80"')}
             <label class="field full" for="p-bio-en">Short bio (EN)<textarea id="p-bio-en" name="bio_en" rows="4" maxlength="1000">${esc(p.bio_en)}</textarea></label>
             ${f('p-learning-en', 'Currently learning (EN)', 'learning_en', 'maxlength="80"')}
@@ -579,11 +583,11 @@ async function submitProfile(form) {
   const fd = new FormData(form);
   const err = $('#profile-error');
   const data = {};
-  ['name', 'title', 'bio', 'location', 'email', 'github_url', 'linkedin_url', 'instagram_url', 'learning', 'next_goal', 'title_en', 'bio_en', 'location_en', 'learning_en', 'next_goal_en'].forEach((k) => { data[k] = String(fd.get(k) || '').trim(); });
+  ['name', 'title', 'bio', 'location', 'email', 'github_url', 'linkedin_url', 'instagram_url', 'learning', 'next_goal', 'title_en', 'bio_en', 'location_en', 'learning_en', 'next_goal_en', 'company', 'company_url', 'job_title', 'job_title_en'].forEach((k) => { data[k] = String(fd.get(k) || '').trim(); });
   data.available = fd.get('available') === 'on';
   data.updated_at = new Date().toISOString();
   if (!data.name) { err.textContent = 'Ad soyad boş olamaz.'; err.hidden = false; return; }
-  if (![data.github_url, data.linkedin_url, data.instagram_url].every(validUrl)) { err.textContent = 'Sosyal bağlantılar https:// ile başlamalı.'; err.hidden = false; return; }
+  if (![data.github_url, data.linkedin_url, data.instagram_url, data.company_url].every(validUrl)) { err.textContent = 'Sosyal bağlantılar https:// ile başlamalı.'; err.hidden = false; return; }
   const ok = await run(supabase.from('profile').update(data).eq('id', 1), 'Profil kaydedildi');
   if (ok) state.profile = { ...state.profile, ...data };
 }

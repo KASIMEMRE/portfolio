@@ -34,6 +34,7 @@
     <section class="hero">
       <div class="hero-text">
         <span class="badge-available" data-available hidden data-i18n="hero.available">Staj ve freelance tekliflerine açık</span>
+        <p class="now-working" id="now-working" hidden></p>
         <p class="mono muted" data-i18n="hero.hello">// merhaba, ben</p>
         <h1 id="hero-name">Kasım Emre<br><span class="accent">Şekersoy</span></h1>
         <p class="tagline" data-i18n="hero.tagline">.NET ile sağlam backend'ler kuran,
@@ -59,26 +60,30 @@ Türkiye'den bir web geliştirici.</p>
         <div id="panel-dev" role="tabpanel" aria-labelledby="tab-dev">
 <div class="editor-body"><span class="k">public record</span> <span class="t">Developer</span>(
   <span class="k">string</span> Name     = <span class="s">"<span data-code="name">Kasım Emre</span>"</span>,
-  <span class="k">string</span> Focus    = <span class="s">"Backend · .NET · Mobile"</span>,
-  <span class="k">string</span> School   = <span class="s">"NEÜ · MIS"</span>,
+  <span class="k">string</span> Company  = <span class="s">"Systek Bilişim"</span>,
+  <span class="k">string</span> Role     = <span class="s">"QDMS &amp; ENSEMBLE"</span>,
+  <span class="k">string</span> School   = <span class="s">"NEÜ · MIS (graduate)"</span>,
   <span class="k">string</span> Location = <span class="s">"<span data-code="location">Kocaeli, TR</span>"</span>
 );
 
-<span class="c">// Everything with .NET Core</span>
+<span class="c">// QDMS &amp; ENSEMBLE ⇄ kurumsal sistemler</span>
+<span class="k">string</span>[] Integrations = [
+  <span class="s">"MES"</span>, <span class="s">"SAP"</span>, <span class="s">"LOGO"</span>
+];
+
 <span class="k">string</span>[] Stack = [
-  <span class="s">"C#"</span>, <span class="s">".NET 10"</span>, <span class="s">"EF Core"</span>,
-  <span class="s">"React Native"</span>, <span class="s">"Supabase"</span>
+  <span class="s">"C#"</span>, <span class="s">".NET"</span>, <span class="s">"SQL"</span>, <span class="s">"React Native"</span>
 ];</div>
         </div>
         <div id="panel-prog" role="tabpanel" aria-labelledby="tab-prog" hidden>
 <div class="editor-body"><span class="k">var</span> me = <span class="k">new</span> <span class="t">Developer</span>();
 
 Console.WriteLine(<span class="s">$"Hello, I'm {me.Name}"</span>);
-Console.WriteLine(<span class="s">$"Focus: {me.Focus}"</span>);</div>
+Console.WriteLine(<span class="s">$"Role: {me.Role} @ {me.Company}"</span>);</div>
           <div class="editor-output">
             <p class="label" data-i18n="hero.output">ÇIKTI</p>
             <p>Hello, I'm <span data-code="name">Kasım Emre</span></p>
-            <p>Focus: Backend · .NET · Mobile</p>
+            <p>Role: QDMS &amp; ENSEMBLE Consultant @ Systek Bilişim</p>
           </div>
         </div>
       </div>
@@ -87,8 +92,8 @@ Console.WriteLine(<span class="s">$"Focus: {me.Focus}"</span>);</div>
     <section class="stats reveal" data-i18n-attr="aria-label:stats.label" aria-label="Kısa bilgiler">
       <div class="stat"><strong id="stat-projects">–</strong><span data-i18n="stats.projects">yayındaki proje</span></div>
       <div class="stat"><strong id="stat-skills">–</strong><span data-i18n="stats.skills">teknoloji &amp; yetkinlik</span></div>
-      <div class="stat"><strong>.NET 10</strong><span data-i18n="stats.dotnet">ile geliştiriyorum</span></div>
-      <div class="stat"><strong>YBS / MIS</strong><span data-i18n="stats.school">Necmettin Erbakan Üni.</span></div>
+      <div class="stat"><strong style="font-size: 26px; line-height: 1.5">MES · SAP · LOGO</strong><span data-i18n="stats.dotnet">entegrasyonları</span></div>
+      <div class="stat"><strong>YBS / MIS</strong><span data-i18n="stats.school">YBS mezunu · NEÜ</span></div>
     </section>
 
     <section class="section reveal" aria-labelledby="proj-h">

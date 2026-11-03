@@ -291,3 +291,9 @@ main.page { display: flex; flex-direction: column; gap: 104px; padding-bottom: 9
 .meta dd { margin: 0; font-weight: 600; }
 
 #project { display: flex; flex-direction: column; gap: 48px; }
+
+/* Mevcut pozisyon satırı */
+.now-working { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text-2); font-size: 14px; }
+.now-working strong, .now-working a { color: var(--text); font-weight: 600; }
+.now-working a:hover { color: var(--accent); }
+.now-working .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }

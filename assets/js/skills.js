@@ -7,6 +7,7 @@ const state = { skills: [], projects: [], filter: 'all', profile: null, loaded: 
 function usedItem(name) {
   if (/portfolyo/i.test(name)) return { label: t('thisPortfolio'), href: 'index.html' };
   if (/tüm projeler/i.test(name)) return { label: t('allProjects'), href: 'projeler.html' };
+  if (state.profile && state.profile.company && name === state.profile.company) return { label: name, href: 'index.html#journey-h' };
   const p = state.projects.find((x) => x.title === name || x.title_en === name);
   if (p) return { label: pick(p, 'title'), href: projectUrl(p) };
   return { label: name, href: `projeler.html?q=${encodeURIComponent(name)}` };

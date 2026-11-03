@@ -12,8 +12,8 @@ export const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY,
 
 // Admin paneli Türkçe etiketleri kullanır; site tarafı i18n üzerinden çevirir.
 export const CATEGORY_LABELS = { api: 'Web API', mobile: 'Mobil', cli: 'CLI', app: 'Uygulama', web: 'Web' };
-export const GROUP_LABELS = { backend: 'Backend', data: 'Veri', mobile: 'Mobil', web: 'Frontend & araçlar', approach: 'Yaklaşım' };
-export const GROUP_ORDER = ['backend', 'data', 'mobile', 'web', 'approach'];
+export const GROUP_LABELS = { enterprise: 'Kurumsal & entegrasyon', backend: 'Backend', data: 'Veri', mobile: 'Mobil', web: 'Frontend & araçlar', approach: 'Yaklaşım' };
+export const GROUP_ORDER = ['enterprise', 'backend', 'data', 'mobile', 'web', 'approach'];
 
 export const catLabel = (c) => t('cat.' + c);
 export const groupLabel = (g) => t('group.' + g);

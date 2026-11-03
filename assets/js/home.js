@@ -35,6 +35,16 @@ function renderHero(p) {
   const shortName = parts.length ? parts.join(' ') : last;
   $all('[data-code="name"]').forEach((el) => { el.textContent = shortName; });
   $all('[data-code="location"]').forEach((el) => { el.textContent = pick(p, 'location'); });
+  const now = $('#now-working');
+  const job = pick(p, 'job_title');
+  if (p.company && job) {
+    const url = safeUrl(p.company_url);
+    const company = url ? `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(p.company)}</a>` : `<strong>${esc(p.company)}</strong>`;
+    now.innerHTML = `<span class="dot" aria-hidden="true"></span>${esc(t('hero.now'))} ${company} ${esc(t('hero.at'))} ${esc(job)}`;
+    now.hidden = false;
+  } else {
+    now.hidden = true;
+  }
 }
 
 function renderFeatured(p) {
@@ -62,7 +72,7 @@ function renderFeatured(p) {
 }
 
 function renderSkills() {
-  const groups = ['backend', 'data', 'mobile', 'web'];
+  const groups = ['enterprise', 'backend', 'data', 'mobile', 'web'];
   let html = groups.map((g) => {
     const items = data.skills.filter((s) => s.group_name === g);
     if (!items.length) return '';
