@@ -20,6 +20,13 @@ Saf HTML/CSS/JavaScript ile yazıldı; veritabanı, kimlik doğrulama ve güvenl
 - Sabit metinler `assets/js/i18n.js` sözlüğünde; veritabanı içerikleri `*_en` sütunlarında.
 - Bir alanın İngilizcesi boş bırakılırsa Türkçesi gösterilir.
 
+## Tema (Sistem / Açık / Koyu)
+
+- Menüdeki tema düğmesi **Sistem → Açık → Koyu** arasında geçer; seçim tarayıcıda hatırlanır.
+- "Sistem" seçiliyken cihazın teması değişince site de anında değişir.
+- `assets/js/theme-init.js` sayfa çizilmeden temayı uygular (yanlış temanın bir anlığına görünmesini önler).
+- Renkler `style.css` içindeki tema değişkenlerinden gelir; açık tema `:root[data-theme="light"]` altında. Kod alanları iki temada da koyu kalır.
+
 ## Admin paneli
 
 - **Projeler:** ekle, düzenle, sil, sırala, öne çıkar, gizle/yayınla; TR/EN kısa ve detaylı açıklama, özellikler, mimari, durum, yıl, kod parçası
@@ -95,6 +102,7 @@ Netlify, Vercel veya Cloudflare Pages'e de olduğu gibi yüklenebilir; derleme a
 │       ├── config.js      # Supabase bağlantısı
 │       ├── common.js      # istemci, yardımcılar, ortak bileşenler
 │       ├── i18n.js        # TR/EN sözlük ve dil seçimi
+│       ├── theme-init.js, theme.js  # tema seçimi
 │       ├── home.js, projects.js, project.js, skills.js
 │       └── admin.js       # panel uygulaması
 └── supabase/

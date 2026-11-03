@@ -1,5 +1,6 @@
 import { SUPABASE_URL, SUPABASE_KEY } from './config.js';
 import { t, pick, lang, initLangToggle } from './i18n.js';
+import { initTheme } from './theme.js';
 
 // Supabase kütüphanesi, sürümü sabitlenmiş yerel kopyadan yüklenir (assets/vendor).
 // Dış CDN'e bağımlılık yok; içerik güvenlik politikası (CSP) yalnızca kendi dosyalarımıza izin verir.
@@ -119,6 +120,7 @@ export function projectCardSmall(p) {
 /** Her sayfanın ortak başlangıcı: dil düğmesi + yıl. */
 export function initPage() {
   initLangToggle();
+  initTheme();
   const year = document.querySelector('[data-year]');
   if (year) year.textContent = new Date().getFullYear();
 }

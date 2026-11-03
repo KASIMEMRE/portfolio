@@ -1,4 +1,7 @@
+import { initTheme } from './theme.js';
 import { supabase, esc, mailtoUrl, $, $all, toast, CATEGORY_LABELS, GROUP_LABELS } from './common.js';
+
+initTheme();
 
 // Clickjacking koruması: panel başka bir sitenin iframe'i içinde açılırsa çalışmaz.
 if (window.top !== window.self) {
