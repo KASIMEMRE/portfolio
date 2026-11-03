@@ -2,14 +2,14 @@
 <html lang="tr">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://pejucnuyhsmzaoxltazf.supabase.co wss://pejucnuyhsmzaoxltazf.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>Yönetim paneli — Kasım Emre</title>
   <meta name="theme-color" content="#010409">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/admin.css">
 </head>
@@ -66,6 +66,8 @@
       <main id="view" class="admin-main" tabindex="-1"></main>
     </div>
   </div>
+
+  <script src="assets/vendor/supabase-2.118.0.js"></script>
 
   <script type="module" src="assets/js/admin.js"></script>
 </body>

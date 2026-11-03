@@ -1,7 +1,13 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 import { SUPABASE_URL, SUPABASE_KEY } from './config.js';
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+// Supabase kütüphanesi, sürümü sabitlenmiş yerel kopyadan yüklenir (assets/vendor).
+// Dış CDN'e bağımlılık yok; içerik güvenlik politikası (CSP) yalnızca kendi dosyalarımıza izin verir.
+if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+  throw new Error('Supabase kütüphanesi yüklenemedi.');
+}
+export const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
+});
 
 export const CATEGORY_LABELS = { api: 'Web API', cli: 'CLI', app: 'Uygulama', web: 'Web' };
 export const GROUP_LABELS = { backend: 'Backend', data: 'Veri', web: 'Frontend & araçlar', approach: 'Yaklaşım' };
@@ -22,10 +28,20 @@ export function esc(value) {
     .replace(/'/g, '&#39;');
 }
 
-/** Sadece http(s) ve mailto bağlantılarına izin ver. */
+/** Sadece https ve mailto bağlantılarına izin ver (javascript:, data: vb. engellenir). */
 export function safeUrl(url) {
   const u = String(url ?? '').trim();
-  return /^(https?:|mailto:)/i.test(u) ? u : '';
+  return /^(https:\/\/|mailto:)/i.test(u) ? u : '';
+}
+
+const EMAIL_RE = /^[^\s@<>?&;,"]+@[^\s@<>?&;,"]+\.[A-Za-z]{2,}$/;
+export function isEmail(v) { return EMAIL_RE.test(String(v ?? '').trim()); }
+
+/** Geçerli e-postadan güvenli mailto bağlantısı üretir; ?cc=, &body= gibi enjeksiyonları engeller. */
+export function mailtoUrl(email, subject) {
+  const e = String(email ?? '').trim();
+  if (!isEmail(e)) return '';
+  return 'mailto:' + e + (subject ? '?subject=' + encodeURIComponent(subject) : '');
 }
 
 export function $(sel, root = document) { return root.querySelector(sel); }
@@ -59,7 +75,7 @@ export function applyProfile(p) {
     const key = el.dataset.profile;
     if (p[key] != null && p[key] !== '') el.textContent = p[key];
   });
-  const links = { github: p.github_url, linkedin: p.linkedin_url, instagram: p.instagram_url, email: p.email ? 'mailto:' + p.email : '' };
+  const links = { github: p.github_url, linkedin: p.linkedin_url, instagram: p.instagram_url, email: mailtoUrl(p.email) };
   $all('[data-link]').forEach((a) => {
     const url = safeUrl(links[a.dataset.link]);
     if (url) a.href = url; else a.hidden = true;

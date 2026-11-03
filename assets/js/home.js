@@ -1,4 +1,4 @@
-import { supabase, esc, safeUrl, $, $all, getProfile, applyProfile, initReveal, projectCardSmall, GROUP_LABELS } from './common.js';
+import { supabase, esc, safeUrl, isEmail, $, $all, getProfile, applyProfile, initReveal, projectCardSmall, GROUP_LABELS } from './common.js';
 
 /* ---------- Kod editörü sekmeleri ---------- */
 function initTabs() {
@@ -96,7 +96,8 @@ function initContact() {
     const email = String(fd.get('email') || '').trim();
     const body = String(fd.get('body') || '').trim();
     if (!name || !email || !body) return showError('Lütfen tüm alanları doldur.');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError('Geçerli bir e-posta adresi gir.');
+    if (!isEmail(email)) return showError('Geçerli bir e-posta adresi gir.');
+    if (name.length > 120 || body.length > 5000) return showError('Mesaj çok uzun.');
 
     let last = 0;
     try { last = Number(localStorage.getItem('lastMessageAt') || 0); } catch (_) { /* yok say */ }
@@ -106,7 +107,11 @@ function initContact() {
     btn.disabled = true; btn.textContent = 'Gönderiliyor…';
     const { error } = await supabase.from('messages').insert({ name, email, body });
     btn.disabled = false; btn.textContent = 'Mesajı gönder';
-    if (error) { console.error(error); return showError('Mesaj gönderilemedi, lütfen tekrar dene.'); }
+    if (error) {
+      // Sunucu tarafı hız sınırı kendi mesajını döndürür; diğer hatalarda iç ayrıntı gösterilmez
+      const limited = error.code === 'P0001' && /Çok fazla|çok fazla/.test(error.message || '');
+      return showError(limited ? error.message : 'Mesaj gönderilemedi, lütfen tekrar dene.');
+    }
 
     try { localStorage.setItem('lastMessageAt', String(Date.now())); } catch (_) { /* yok say */ }
     form.reset();

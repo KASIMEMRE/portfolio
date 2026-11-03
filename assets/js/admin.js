@@ -1,4 +1,10 @@
-import { supabase, esc, safeUrl, $, $all, toast, CATEGORY_LABELS, GROUP_LABELS } from './common.js';
+import { supabase, esc, mailtoUrl, $, $all, toast, CATEGORY_LABELS, GROUP_LABELS } from './common.js';
+
+// Clickjacking koruması: panel başka bir sitenin iframe'i içinde açılırsa çalışmaz.
+if (window.top !== window.self) {
+  document.body.textContent = 'Bu sayfa güvenlik nedeniyle çerçeve içinde açılamaz.';
+  throw new Error('framed');
+}
 
 const state = {
   section: 'overview',
@@ -34,12 +40,40 @@ $('#login-form').addEventListener('submit', async (e) => {
   const email = $('#l-email').value.trim();
   const password = $('#l-pass').value;
   if (!email || !password) { err.textContent = 'E-posta ve şifre gerekli.'; err.hidden = false; return; }
+  const waitMs = loginLockedUntil - Date.now();
+  if (waitMs > 0) { err.textContent = `Çok fazla hatalı deneme. ${Math.ceil(waitMs / 1000)} saniye sonra tekrar dene.`; err.hidden = false; return; }
   const btn = e.submitter || $('#login-form button[type="submit"]');
   btn.disabled = true; btn.textContent = 'Giriş yapılıyor…';
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   btn.disabled = false; btn.textContent = 'Giriş yap';
-  if (error) { err.textContent = 'Giriş başarısız: e-posta veya şifre hatalı.'; err.hidden = false; }
+  $('#l-pass').value = '';
+  if (error) {
+    failedLogins += 1;
+    // Her 5 hatalı denemede artan bekleme süresi (sunucudaki Supabase sınırına ek olarak)
+    if (failedLogins % 5 === 0) loginLockedUntil = Date.now() + Math.min(300, 30 * (failedLogins / 5)) * 1000;
+    err.textContent = 'Giriş başarısız: e-posta veya şifre hatalı.';
+    err.hidden = false;
+  } else {
+    failedLogins = 0;
+  }
 });
+
+let failedLogins = 0;
+let loginLockedUntil = 0;
+
+/* Hareketsizlikte otomatik çıkış (30 dk) */
+const IDLE_LIMIT = 30 * 60 * 1000;
+let lastActivity = Date.now();
+['click', 'keydown', 'pointermove', 'scroll'].forEach((ev) => window.addEventListener(ev, () => { lastActivity = Date.now(); }, { passive: true }));
+setInterval(async () => {
+  if (!$('#app-view').hidden && Date.now() - lastActivity > IDLE_LIMIT) {
+    await supabase.auth.signOut();
+    show('login-view');
+    const err = $('#login-error');
+    err.textContent = 'Uzun süre işlem yapılmadığı için güvenli çıkış yapıldı.';
+    err.hidden = false;
+  }
+}, 60 * 1000);
 
 document.addEventListener('click', async (e) => {
   if (e.target.closest('[data-action="logout"]')) {
@@ -119,7 +153,7 @@ function moveIn(list, id, dir) {
 const splitList = (text, sep) => String(text || '').split(sep).map((s) => s.trim()).filter(Boolean);
 const fmtDate = (iso) => new Date(iso).toLocaleString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-function validUrl(v) { return !v || /^https?:\/\//i.test(v); }
+function validUrl(v) { return !v || /^https:\/\/[^\s<>"']+$/i.test(v); }
 
 /* =========================================================
    Gezinme
@@ -396,7 +430,7 @@ function renderMessages() {
       <span class="meta"><span class="from">${esc(m.name)}</span><span class="preview">${esc(m.body)}</span><span class="date">${esc(fmtDate(m.created_at))}</span></span>
     </button>`).join('');
   const sel = state.messages.find((m) => m.id === state.selectedMsg);
-  const mail = sel ? safeUrl(`mailto:${sel.email}?subject=${encodeURIComponent('Re: Portfolyo mesajın')}`) : '';
+  const mail = sel ? mailtoUrl(sel.email, 'Re: Portfolyo mesajın') : '';
   const detail = sel ? `
     <div class="panel-body">
       <div><h2 style="font:700 20px var(--font-display)">${esc(sel.name)}</h2><p class="muted" style="font-size:13px">${esc(sel.email)} · ${esc(fmtDate(sel.created_at))}</p></div>
