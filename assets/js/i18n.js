@@ -69,7 +69,7 @@ const DICT = {
     'intro.web': 'Arayüz tarafı ve günlük geliştirme araçları.',
     'intro.approach': 'Yönetim Bilişim Sistemleri eğitiminden gelen bakış açısı.',
 
-    'footer.made': '.NET ve kahveyle yapıldı', 'thisPortfolio': 'Bu portfolyo', 'allProjects': 'Tüm projeler', 'workplace': 'İş deneyimi'
+    'thisPortfolio': 'Bu portfolyo', 'allProjects': 'Tüm projeler', 'workplace': 'İş deneyimi'
   },
   en: {
     'nav.home': 'Home', 'nav.projects': 'Projects', 'nav.skills': 'Skills', 'nav.contact': 'Contact',
@@ -134,7 +134,7 @@ const DICT = {
     'intro.web': 'The interface side and everyday development tools.',
     'intro.approach': 'A perspective shaped by studying Management Information Systems.',
 
-    'footer.made': 'Built with .NET and coffee', 'thisPortfolio': 'This portfolio', 'allProjects': 'All projects', 'workplace': 'Work experience'
+    'thisPortfolio': 'This portfolio', 'allProjects': 'All projects', 'workplace': 'Work experience'
   }
 };
 
