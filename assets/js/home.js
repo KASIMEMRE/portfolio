@@ -81,7 +81,7 @@ function featuredVisual(p) {
     const pick3 = (shots.length >= 4 ? [2, 1, 3] : [1, 0, 2]).map((i) => shots[i]).filter(Boolean);
     return `<div class="featured-shots phones">${pick3.map((g) => {
       const idx = shots.indexOf(g);
-      return `<button type="button" class="phone" data-shot="${idx}" aria-label="${esc(t('gallery.open'))}: ${esc(g.alt)}"><img src="${esc(g.src)}" alt="${esc(g.alt)}" width="${g.w}" height="${g.h}" loading="lazy" decoding="async"></button>`;
+      return `<button type="button" class="phone" data-shot="${idx}" aria-label="${esc(t('gallery.open'))}: ${esc(g.alt)}"><img src="${esc(g.src)}" alt="${esc(g.alt)}" width="${g.w}" height="${g.h}" loading="eager" decoding="async"></button>`;
     }).join('')}</div>`;
   }
   if (shots.length) {

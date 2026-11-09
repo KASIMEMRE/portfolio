@@ -394,11 +394,11 @@ section[id] { scroll-margin-top: 88px; }
 
 /* Öne çıkan kart görseli */
 .featured-shots { flex: 1 1 460px; min-width: 0; display: flex; align-items: center; justify-content: center; padding: 52px 28px 28px;
-  background: radial-gradient(110% 80% at 50% 100%, color-mix(in srgb, var(--accent) 16%, var(--bg-deep)) 0%, var(--bg-deep) 70%); border-left: 1px solid var(--border); }
-.featured-shots.phones { gap: 14px; align-items: flex-end; }
-.featured-shots .phone { flex: 0 1 165px; min-width: 0; padding: 0; border: 1px solid var(--border); border-radius: 22px; overflow: hidden; background: #000; cursor: zoom-in; box-shadow: 0 24px 50px -24px var(--shadow); transition: transform .25s ease; }
+  background: radial-gradient(90% 70% at 50% 55%, color-mix(in srgb, var(--accent) 16%, var(--bg-deep)) 0%, var(--bg-deep) 70%); border-left: 1px solid var(--border); }
+.featured-shots.phones { gap: 14px; align-items: center; }
+.featured-shots .phone { flex: 0 1 180px; min-width: 0; padding: 0; border: 1px solid var(--border); border-radius: 22px; overflow: hidden; background: #000; cursor: zoom-in; box-shadow: 0 24px 50px -24px var(--shadow); transition: transform .25s ease; }
 .featured-shots .phone img { display: block; width: 100%; height: auto; }
-.featured-shots .phone:nth-child(2) { transform: translateY(-24px); flex-basis: 190px; }
+.featured-shots .phone:nth-child(2) { transform: translateY(-24px); flex-basis: 215px; }
 .featured-shots .phone:hover { transform: translateY(-6px); }
 .featured-shots .phone:nth-child(2):hover { transform: translateY(-30px); }
 @media (max-width: 640px) { .featured-shots { border-left: 0; border-top: 1px solid var(--border); padding: 20px 12px; } .featured-shots .phone:nth-child(3) { display: none; } }
@@ -439,3 +439,20 @@ section[id] { scroll-margin-top: 88px; }
 .lb-prev { left: 16px; top: 50%; transform: translateY(-50%); }
 .lb-next { right: 16px; top: 50%; transform: translateY(-50%); }
 @media (max-width: 640px) { .lb-prev, .lb-next { top: auto; bottom: 16px; transform: none; } }
+
+/* Öne çıkan kart: telefonlar hafifçe üst üste, alanı dolduracak büyüklükte */
+.featured-shots.phones { gap: 0; padding: 40px 24px; }
+.featured-shots.phones .phone { flex: 0 0 38%; max-width: 230px; position: relative; z-index: 1; }
+.featured-shots.phones .phone:nth-child(1) { margin-right: -9%; transform: rotate(-5deg) translateY(10px); }
+.featured-shots.phones .phone:nth-child(2) { flex-basis: 44%; max-width: 270px; z-index: 2; transform: translateY(-12px); box-shadow: 0 30px 60px -20px rgba(0,0,0,.55); }
+.featured-shots.phones .phone:nth-child(3) { margin-left: -9%; transform: rotate(5deg) translateY(10px); }
+.featured-shots.phones .phone:nth-child(1):hover { transform: rotate(-5deg) translateY(2px); z-index: 3; }
+.featured-shots.phones .phone:nth-child(2):hover { transform: translateY(-20px); }
+.featured-shots.phones .phone:nth-child(3):hover { transform: rotate(5deg) translateY(2px); z-index: 3; }
+@media (max-width: 640px) {
+  .featured-shots.phones { padding: 32px 20px 28px; overflow: hidden; }
+  .featured-shots.phones .phone { flex-basis: 36%; border-radius: 16px; }
+  .featured-shots.phones .phone:nth-child(1) { margin-right: -10%; }
+  .featured-shots.phones .phone:nth-child(2) { flex-basis: 42%; }
+  .featured-shots.phones .phone:nth-child(3) { display: block; margin-left: -10%; }
+}
