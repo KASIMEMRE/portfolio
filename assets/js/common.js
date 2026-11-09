@@ -12,7 +12,7 @@ export const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY,
 });
 
 // Admin paneli Türkçe etiketleri kullanır; site tarafı i18n üzerinden çevirir.
-export const CATEGORY_LABELS = { api: 'Web API', mobile: 'Mobil', cli: 'CLI', app: 'Uygulama', web: 'Web' };
+export const CATEGORY_LABELS = { api: 'Web API', ai: 'Yapay zekâ', mobile: 'Mobil', cli: 'CLI', app: 'Uygulama', web: 'Web' };
 export const GROUP_LABELS = { enterprise: 'Kurumsal & entegrasyon', backend: 'Backend', data: 'Veri', mobile: 'Mobil', web: 'Frontend & araçlar', approach: 'Yaklaşım' };
 export const GROUP_ORDER = ['enterprise', 'backend', 'data', 'mobile', 'web', 'approach'];
 
@@ -106,10 +106,113 @@ export function techChips(list) {
   return (list || []).map((x) => `<span class="chip">${esc(x)}</span>`).join('');
 }
 
+/* =========================================================
+   Galeri: yalnızca sitenin kendi klasöründeki görseller
+   ========================================================= */
+const IMG_RE = /^assets\/img\/[a-z0-9_-]+(\/[a-z0-9_-]+)*\.(webp|png|jpe?g)$/;
+
+/** Projenin geçerli galeri öğeleri (dile göre açıklama ile). */
+export function galleryOf(p) {
+  return (Array.isArray(p?.gallery) ? p.gallery : [])
+    .filter((g) => g && IMG_RE.test(String(g.src || '')))
+    .map((g) => ({
+      src: g.src,
+      w: Number(g.w) || 0,
+      h: Number(g.h) || 0,
+      alt: (lang() === 'en' && g.alt_en) ? g.alt_en : (g.alt || pick(p, 'title'))
+    }));
+}
+export const isPhoneShot = (g) => g.h > g.w * 1.3;
+
+function imgTag(g, cls = '', eager = false) {
+  const size = g.w && g.h ? ` width="${g.w}" height="${g.h}"` : '';
+  return `<img class="${cls}" src="${esc(g.src)}" alt="${esc(g.alt)}"${size} loading="${eager ? 'eager' : 'lazy'}" decoding="async">`;
+}
+
+/** Kart kapağı: telefon ekranlarında 3'lü şerit, masaüstünde üstten kırpılmış görsel. */
+export function coverHtml(p, max = 3) {
+  const items = galleryOf(p);
+  if (!items.length) return '';
+  if (isPhoneShot(items[0])) {
+    const phones = items.filter(isPhoneShot).slice(0, max);
+    return `<div class="cover cover-phones" aria-hidden="true">${phones.map((g) => `<div class="phone">${imgTag(g)}</div>`).join('')}</div>`;
+  }
+  return `<div class="cover cover-desktop" aria-hidden="true">${imgTag(items[0])}</div>`;
+}
+
+/** Detay sayfası galerisi: her görsel büyütmek için bir düğme. */
+export function galleryHtml(p) {
+  const items = galleryOf(p);
+  if (!items.length) return '';
+  const phone = isPhoneShot(items[0]);
+  const cells = items.map((g, i) => `<li><button type="button" class="shot ${phone ? 'shot-phone' : 'shot-desktop'}" data-shot="${i}" aria-label="${esc(t('gallery.open'))}: ${esc(g.alt)}">
+      ${phone ? '' : '<span class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></span>'}${imgTag(g, '', i < 2)}</button>
+      <span class="shot-caption">${esc(g.alt)}</span></li>`).join('');
+  return `<ul class="gallery ${phone ? 'gallery-phones' : 'gallery-desktop'}">${cells}</ul>`;
+}
+
+/** Büyütülmüş görünüm (dialog): ok tuşları, Esc ve dokunmatik kaydırma ile gezinme. */
+let lightbox;
+export function openLightbox(items, start = 0) {
+  if (!items.length) return;
+  if (!lightbox) {
+    lightbox = document.createElement('dialog');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = `<figure><img alt=""><figcaption><span class="lb-caption"></span><span class="lb-count mono"></span></figcaption></figure>
+      <button type="button" class="lb-btn lb-prev"><span aria-hidden="true">‹</span></button>
+      <button type="button" class="lb-btn lb-next"><span aria-hidden="true">›</span></button>
+      <button type="button" class="lb-btn lb-close"><span aria-hidden="true">×</span></button>`;
+    document.body.appendChild(lightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) lightbox.close();
+      else if (e.target.closest('.lb-close')) lightbox.close();
+      else if (e.target.closest('.lb-prev')) lightbox._go(-1);
+      else if (e.target.closest('.lb-next')) lightbox._go(1);
+    });
+    lightbox.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); lightbox._go(-1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); lightbox._go(1); }
+    });
+    let x0 = null;
+    lightbox.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    lightbox.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) lightbox._go(dx < 0 ? 1 : -1);
+    }, { passive: true });
+    lightbox.addEventListener('close', () => { document.body.style.overflow = ''; lightbox._return?.focus(); });
+  }
+  const img = lightbox.querySelector('img');
+  let i = start;
+  lightbox._items = items;
+  lightbox._go = (d) => { i = (i + d + items.length) % items.length; show(); };
+  const show = () => {
+    const g = items[i];
+    img.src = g.src; img.alt = g.alt;
+    if (g.w && g.h) { img.width = g.w; img.height = g.h; }
+    lightbox.classList.toggle('is-phone', isPhoneShot(g));
+    lightbox.querySelector('.lb-caption').textContent = g.alt;
+    lightbox.querySelector('.lb-count').textContent = `${i + 1} / ${items.length}`;
+  };
+  lightbox.setAttribute('aria-label', t('project.gallery'));
+  lightbox.querySelector('.lb-close').setAttribute('aria-label', t('gallery.close'));
+  lightbox.querySelector('.lb-prev').setAttribute('aria-label', t('gallery.prev'));
+  lightbox.querySelector('.lb-next').setAttribute('aria-label', t('gallery.next'));
+  const multi = items.length > 1;
+  lightbox.querySelector('.lb-prev').hidden = !multi;
+  lightbox.querySelector('.lb-next').hidden = !multi;
+  lightbox._return = document.activeElement;
+  show();
+  document.body.style.overflow = 'hidden';
+  lightbox.showModal();
+  lightbox.querySelector('.lb-close').focus();
+}
+
 export function projectCardSmall(p) {
   const title = pick(p, 'title');
   const status = p.status === 'in_progress' ? `<span class="badge-progress">${esc(t('inProgress'))}</span>` : '';
   return `<article class="card card-link">
+    ${coverHtml(p)}
     <div class="card-top"><span>${esc(upper(catLabel(p.category)))}</span>${status}</div>
     <h3><a href="${esc(projectUrl(p))}" class="stretched">${esc(title)}</a></h3>
     <p class="desc">${esc(pick(p, 'description'))}</p>

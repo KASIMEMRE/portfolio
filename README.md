@@ -9,7 +9,7 @@ Saf HTML/CSS/JavaScript ile yazıldı; veritabanı, kimlik doğrulama ve güvenl
 |---|---|---|
 | Ana sayfa | `index.html` | Hero, öne çıkan proje, proje özeti, yetenek grupları, yolculuk, iletişim formu |
 | Projeler | `projeler.html` | Arama, kategori filtresi, proje kartları (`?kategori=api&q=...` destekli) |
-| Proje detayı | `proje.html?p=slug` | Detaylı açıklama, öne çıkan özellikler, mimari, teknolojiler, kod parçası |
+| Proje detayı | `proje.html?p=slug` | Ekran görüntüleri (büyütülebilir galeri), detaylı açıklama, özellikler, mimari, teknolojiler, kod parçası |
 | Yetenekler | `yetenekler.html` | Alan filtresi, her teknolojinin kullanıldığı projeler |
 | Admin | `admin.html` | Giriş korumalı yönetim paneli |
 
@@ -19,6 +19,13 @@ Saf HTML/CSS/JavaScript ile yazıldı; veritabanı, kimlik doğrulama ve güvenl
 - İlk ziyarette tarayıcı dili Türkçe ise Türkçe, değilse İngilizce açılır.
 - Sabit metinler `assets/js/i18n.js` sözlüğünde; veritabanı içerikleri `*_en` sütunlarında.
 - Bir alanın İngilizcesi boş bırakılırsa Türkçesi gösterilir.
+
+## Ekran görüntüleri
+
+- Görseller repoda `assets/img/projects/<slug>/` altında WebP olarak durur (CSP gereği dış adreslerden görsel yüklenmez).
+- Admin → Projeler → **Ekran görüntüleri** alanına her satıra `yol | Türkçe açıklama | English alt` yazılır; boyutlar kaydederken otomatik okunur.
+- İlk görsel kartlarda kapak olur. Telefon ekranları (dikey) şerit hâlinde, masaüstü görüntüleri pencere çerçevesiyle gösterilir.
+- Veritabanı yalnızca `assets/img/` altındaki yolları kabul eder (`supabase/05_gallery.sql`).
 
 ## Tema (Sistem / Açık / Koyu)
 
@@ -86,6 +93,7 @@ Netlify, Vercel veya Cloudflare Pages'e de olduğu gibi yüklenebilir; derleme a
 3. Admin kullanıcını oluştur, e-postasını `admins` tablosuna ekle (dosyanın sonundaki yorum).
 4. `supabase/02_security_hardening.sql` dosyasını çalıştır (admin kaydını kullanıcı kimliğine bağlar ve yetkileri daraltır).
 5. `supabase/03_bilingual_and_details.sql` dosyasını çalıştır (İngilizce alanlar ve proje detay alanları).
+6. Sırasıyla `04_job_and_enterprise.sql` ve `05_gallery.sql` dosyalarını çalıştır.
 4. `assets/js/config.js` içindeki URL ve publishable anahtarı kendi projeninkilerle değiştir.
 
 ## Yapı
@@ -108,5 +116,7 @@ Netlify, Vercel veya Cloudflare Pages'e de olduğu gibi yüklenebilir; derleme a
 └── supabase/
     ├── schema.sql                  # tablolar, RLS kuralları
     ├── 02_security_hardening.sql   # yetki daraltma, admin bağlama, spam koruması
-    └── 03_bilingual_and_details.sql # İngilizce alanlar, proje detayları
+    ├── 03_bilingual_and_details.sql # İngilizce alanlar, proje detayları
+    ├── 04_job_and_enterprise.sql    # pozisyon/şirket, kurumsal yetenek grubu
+    └── 05_gallery.sql               # ekran görüntüleri, yapay zekâ kategorisi
 ```

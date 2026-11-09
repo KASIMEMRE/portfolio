@@ -51,7 +51,8 @@ const DICT = {
     'project.architecture': 'Mimari', 'project.stack': 'Kullanılan teknolojiler', 'project.code': 'Koddan bir parça',
     'project.notFound': 'Proje bulunamadı', 'project.notFoundSub': 'Bağlantı değişmiş olabilir.', 'project.year': 'Yıl',
     'project.category': 'Kategori', 'project.status': 'Durum', 'status.completed': 'Tamamlandı', 'status.in_progress': 'Geliştiriliyor',
-    'project.others': 'Diğer projeler',
+    'project.others': 'Diğer projeler', 'project.gallery': 'Ekran görüntüleri',
+    'gallery.open': 'Büyüt', 'gallery.close': 'Kapat', 'gallery.prev': 'Önceki görsel', 'gallery.next': 'Sonraki görsel', 'gallery.hint': 'Büyütmek için bir görsele dokun.',
 
     'skills.title': 'Araç kutum', 'skills.kicker': '// yetenekler',
     'skills.lead': 'Kullandığım teknolojiler ve her birini hangi projede uyguladığım. Bir projeye tıklayarak detayına gidebilirsin.',
@@ -60,7 +61,7 @@ const DICT = {
     'skills.cta': 'Bu yetenekleri iş başında gör', 'skills.ctaSub': 'Her teknolojinin gerçek bir projede nasıl kullanıldığını incele.',
     'skills.toProjects': 'Projelere git →',
 
-    'cat.api': 'Web API', 'cat.cli': 'CLI', 'cat.app': 'Uygulama', 'cat.web': 'Web', 'cat.mobile': 'Mobil',
+    'cat.api': 'Web API', 'cat.ai': 'Yapay zekâ', 'cat.cli': 'CLI', 'cat.app': 'Uygulama', 'cat.web': 'Web', 'cat.mobile': 'Mobil',
     'group.enterprise': 'Kurumsal & entegrasyon', 'intro.enterprise': 'İş hayatımın merkezi: kalite yönetim yazılımları ve bunları ERP / üretim sistemlerine bağlayan entegrasyonlar.',
     'group.backend': 'Backend', 'group.data': 'Veri', 'group.mobile': 'Mobil', 'group.web': 'Frontend & araçlar', 'group.approach': 'Yaklaşım',
     'intro.backend': 'Projelerimin omurgası: API tasarımı, iş kuralları ve güvenlik.',
@@ -116,7 +117,8 @@ const DICT = {
     'project.architecture': 'Architecture', 'project.stack': 'Tech stack', 'project.code': 'A piece of the code',
     'project.notFound': 'Project not found', 'project.notFoundSub': 'The link may have changed.', 'project.year': 'Year',
     'project.category': 'Category', 'project.status': 'Status', 'status.completed': 'Completed', 'status.in_progress': 'In progress',
-    'project.others': 'Other projects',
+    'project.others': 'Other projects', 'project.gallery': 'Screenshots',
+    'gallery.open': 'Enlarge', 'gallery.close': 'Close', 'gallery.prev': 'Previous image', 'gallery.next': 'Next image', 'gallery.hint': 'Tap an image to enlarge it.',
 
     'skills.title': 'My toolbox', 'skills.kicker': '// skills',
     'skills.lead': 'The technologies I use and the projects where I applied each one. Click a project to see its details.',
@@ -125,7 +127,7 @@ const DICT = {
     'skills.cta': 'See these skills in action', 'skills.ctaSub': 'Explore how each technology is used in a real project.',
     'skills.toProjects': 'Go to projects →',
 
-    'cat.api': 'Web API', 'cat.cli': 'CLI', 'cat.app': 'Application', 'cat.web': 'Web', 'cat.mobile': 'Mobile',
+    'cat.api': 'Web API', 'cat.ai': 'AI', 'cat.cli': 'CLI', 'cat.app': 'Application', 'cat.web': 'Web', 'cat.mobile': 'Mobile',
     'group.enterprise': 'Enterprise & integration', 'intro.enterprise': 'The core of my day job: quality management software and the integrations that connect it to ERP and manufacturing systems.',
     'group.backend': 'Backend', 'group.data': 'Data', 'group.mobile': 'Mobile', 'group.web': 'Frontend & tools', 'group.approach': 'Approach',
     'intro.backend': 'The backbone of my projects: API design, business rules and security.',

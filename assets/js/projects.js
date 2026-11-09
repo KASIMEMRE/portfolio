@@ -1,4 +1,4 @@
-import { supabase, esc, safeUrl, $, getProfile, applyProfile, initPage, catLabel, upper, projectUrl, techChips, CATEGORY_LABELS } from './common.js';
+import { supabase, esc, safeUrl, $, getProfile, applyProfile, initPage, catLabel, upper, projectUrl, techChips, coverHtml, CATEGORY_LABELS } from './common.js';
 import { t, pick, lang } from './i18n.js';
 
 const state = { all: [], filter: 'all', query: '', profile: null, loaded: false };
@@ -43,7 +43,9 @@ function card(p) {
     p.featured ? `<span class="badge-featured">${esc(t('featured'))}</span>` : '',
     p.status === 'in_progress' ? `<span class="badge-progress">${esc(t('inProgress'))}</span>` : ''
   ].join('');
+  const cover = coverHtml(p);
   return `<article class="project-card">
+    ${cover ? `<a href="${esc(projectUrl(p))}" class="cover-link" tabindex="-1" aria-hidden="true">${cover}</a>` : ''}
     <header><span>${esc(upper(catLabel(p.category)))}${p.year ? ' · ' + esc(p.year) : ''}</span><span style="display:flex;gap:6px">${badges}</span></header>
     <div class="body">
       <h2><a href="${esc(projectUrl(p))}" class="title-link">${esc(title)}</a></h2>

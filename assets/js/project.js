@@ -1,4 +1,4 @@
-import { supabase, esc, safeUrl, $, getProfile, applyProfile, initPage, catLabel, upper, projectCardSmall, techChips } from './common.js';
+import { supabase, esc, safeUrl, $, getProfile, applyProfile, initPage, catLabel, upper, projectCardSmall, techChips, galleryHtml, galleryOf, openLightbox } from './common.js';
 import { t, pick } from './i18n.js';
 
 const slug = new URLSearchParams(location.search).get('p') || '';
@@ -31,6 +31,7 @@ function render() {
   }).join('');
   const details = paragraphs(pick(p, 'details'));
   const statusLabel = t('status.' + (p.status || 'completed'));
+  const gallery = galleryHtml(p);
 
   box.innerHTML = `
   <section class="page-hero detail-hero">
@@ -48,6 +49,11 @@ function render() {
       <a class="btn" href="projeler.html">${esc(t('project.back'))}</a>
     </div>
   </section>
+
+  ${gallery ? `<section class="detail-block gallery-block" aria-labelledby="gallery-h">
+    <div class="gallery-head"><h2 id="gallery-h">${esc(t('project.gallery'))}</h2><p class="muted">${esc(t('gallery.hint'))}</p></div>
+    ${gallery}
+  </section>` : ''}
 
   <div class="detail-grid">
     <div class="detail-main">
@@ -72,6 +78,9 @@ function render() {
   </div>`;
 
   $('#others').innerHTML = state.others.slice(0, 3).map(projectCardSmall).join('');
+  box.querySelectorAll('[data-shot]').forEach((btn) => {
+    btn.addEventListener('click', () => openLightbox(galleryOf(p), Number(btn.dataset.shot)));
+  });
   $('#others-wrap').hidden = state.others.length === 0;
 }
 

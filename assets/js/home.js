@@ -1,4 +1,4 @@
-import { supabase, esc, safeUrl, isEmail, $, $all, getProfile, applyProfile, initReveal, initPage, projectCardSmall, projectUrl, techChips, groupLabel } from './common.js';
+import { supabase, esc, safeUrl, isEmail, $, $all, getProfile, applyProfile, initReveal, initPage, projectCardSmall, projectUrl, techChips, groupLabel, galleryOf, isPhoneShot, openLightbox } from './common.js';
 import { t, pick } from './i18n.js';
 
 const data = { profile: null, projects: [], skills: [], journey: [] };
@@ -67,8 +67,28 @@ function renderFeatured(p) {
         ${gh ? `<a class="btn" href="${esc(gh)}" target="_blank" rel="noopener">${esc(t('github'))}</a>` : ''}
       </div>
     </div>
-    ${p.code_snippet ? `<pre class="featured-code" aria-label="${esc(t('project.code'))}">${esc(p.code_snippet)}</pre>` : ''}
+    ${featuredVisual(p)}
   </article>`;
+  box.querySelectorAll('[data-shot]').forEach((btn) => {
+    btn.addEventListener('click', () => openLightbox(galleryOf(p), Number(btn.dataset.shot)));
+  });
+}
+
+/** Öne çıkan kartın sağ tarafı: ekran görüntüsü varsa telefonlar / pencere, yoksa kod. */
+function featuredVisual(p) {
+  const shots = galleryOf(p);
+  if (shots.length && isPhoneShot(shots[0])) {
+    const pick3 = (shots.length >= 4 ? [2, 1, 3] : [1, 0, 2]).map((i) => shots[i]).filter(Boolean);
+    return `<div class="featured-shots phones">${pick3.map((g) => {
+      const idx = shots.indexOf(g);
+      return `<button type="button" class="phone" data-shot="${idx}" aria-label="${esc(t('gallery.open'))}: ${esc(g.alt)}"><img src="${esc(g.src)}" alt="${esc(g.alt)}" width="${g.w}" height="${g.h}" loading="lazy" decoding="async"></button>`;
+    }).join('')}</div>`;
+  }
+  if (shots.length) {
+    const g = shots[0];
+    return `<div class="featured-shots desktop"><button type="button" class="shot shot-desktop" data-shot="0" aria-label="${esc(t('gallery.open'))}: ${esc(g.alt)}"><span class="browser-bar" aria-hidden="true"><i></i><i></i><i></i></span><img src="${esc(g.src)}" alt="${esc(g.alt)}" width="${g.w}" height="${g.h}" loading="lazy" decoding="async"></button></div>`;
+  }
+  return p.code_snippet ? `<pre class="featured-code" aria-label="${esc(t('project.code'))}">${esc(p.code_snippet)}</pre>` : '';
 }
 
 function renderSkills() {
@@ -95,7 +115,7 @@ function renderAll() {
   renderHero(data.profile);
   $('#stat-projects').textContent = data.projects.length;
   $('#stat-skills').textContent = data.skills.length;
-  const featured = data.projects.find((p) => p.featured && p.code_snippet) || data.projects.find((p) => p.featured) || data.projects[0];
+  const featured = data.projects.find((p) => p.featured && galleryOf(p).length) || data.projects.find((p) => p.featured && p.code_snippet) || data.projects.find((p) => p.featured) || data.projects[0];
   renderFeatured(featured);
   $('#projects-preview').innerHTML = data.projects.filter((p) => p !== featured).slice(0, 3).map(projectCardSmall).join('');
   renderSkills();

@@ -224,7 +224,7 @@ function renderOverview() {
    Projeler
    ========================================================= */
 function projectForm(p) {
-  const v = p || { title: '', title_en: '', slug: '', category: 'api', status: 'completed', year: '', description: '', description_en: '', features: [], features_en: [], details: '', details_en: '', architecture: [], architecture_en: [], tech: [], github_url: '', demo_url: '', code_snippet: '', featured: false, visible: true };
+  const v = p || { gallery: [], title: '', title_en: '', slug: '', category: 'api', status: 'completed', year: '', description: '', description_en: '', features: [], features_en: [], details: '', details_en: '', architecture: [], architecture_en: [], tech: [], github_url: '', demo_url: '', code_snippet: '', featured: false, visible: true };
   const cats = Object.entries(CATEGORY_LABELS).map(([k, l]) => `<option value="${k}" ${v.category === k ? 'selected' : ''}>${esc(l)}</option>`).join('');
   const statuses = [['completed', 'Tamamlandı'], ['in_progress', 'Geliştiriliyor']].map(([k, l]) => `<option value="${k}" ${v.status === k ? 'selected' : ''}>${l}</option>`).join('');
   const lines = (a) => esc((a || []).join('\n'));
@@ -260,6 +260,12 @@ function projectForm(p) {
         <label class="field" for="f-features-en">Key features<span class="hint">One per line</span><textarea id="f-features-en" name="features_en" rows="5">${lines(v.features_en)}</textarea></label>
         <label class="field" for="f-arch-en">Architecture / layers<span class="hint">One per line — "Layer: description"</span><textarea id="f-arch-en" name="architecture_en" rows="5">${lines(v.architecture_en)}</textarea></label>
       </div>
+
+      <h3 class="form-section">Ekran görüntüleri</h3>
+      <label class="field" for="f-gallery">Her satıra bir görsel: <code>yol | Türkçe açıklama | English alt</code>
+        <span class="hint">Görseli önce repoda <code>assets/img/projects/${esc(v.slug || 'proje-adi')}/</code> klasörüne ekle (WebP önerilir). İlk görsel kapak olur. Boyutlar kaydederken otomatik okunur.</span>
+        <textarea id="f-gallery" name="gallery" class="code" rows="5" placeholder="assets/img/projects/proje-adi/ekran.webp | Ana ekran | Home screen">${esc(galleryToText(v.gallery))}</textarea></label>
+      ${galleryPreview(v.gallery)}
 
       <h3 class="form-section">Kod parçası</h3>
       <label class="field" for="f-code">Öne çıkan kartta ve proje sayfasında gösterilir<textarea id="f-code" name="code_snippet" class="code" rows="8" maxlength="4000">${esc(v.code_snippet)}</textarea></label>
@@ -334,6 +340,7 @@ async function submitProject(form) {
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(data.slug)) return fail('Bağlantı adı yalnızca küçük harf, rakam ve tire içerebilir (ör. cinemabooking-api).');
   if (state.projects.some((x) => x.slug === data.slug && x.id !== state.editing.projects)) return fail('Bu bağlantı adı başka bir projede kullanılıyor.');
   if (!validUrl(data.github_url) || !validUrl(data.demo_url)) return fail('Bağlantılar https:// ile başlamalı.');
+  try { data.gallery = await parseGallery(fd.get('gallery')); } catch (e) { return fail(e.message); }
   const id = state.editing.projects;
   let ok;
   if (id) ok = await run(supabase.from('projects').update(data).eq('id', id), 'Proje güncellendi');
@@ -341,6 +348,43 @@ async function submitProject(form) {
   if (!ok) return;
   state.editing.projects = null;
   await reload('projects');
+}
+
+/* ---------- Galeri yardımcıları ---------- */
+const GALLERY_RE = /^assets\/img\/[a-z0-9_-]+(\/[a-z0-9_-]+)*\.(webp|png|jpe?g)$/;
+
+function galleryToText(g) {
+  return (Array.isArray(g) ? g : []).map((x) => [x.src, x.alt || '', x.alt_en || ''].join(' | ').replace(/( \| )+$/, '')).join('\n');
+}
+
+function galleryPreview(g) {
+  const items = (Array.isArray(g) ? g : []).filter((x) => GALLERY_RE.test(x.src || ''));
+  if (!items.length) return '';
+  return `<div class="gallery-preview">${items.map((x) => `<img src="${esc(x.src)}" alt="${esc(x.alt || '')}" loading="lazy">`).join('')}</div>`;
+}
+
+/** Görselin gerçek boyutunu okur (yüklenemezse hata verir). */
+function imageSize(src) {
+  return new Promise((resolve, reject) => {
+    const im = new Image();
+    im.onload = () => resolve({ w: im.naturalWidth, h: im.naturalHeight });
+    im.onerror = () => reject(new Error(src));
+    im.src = src;
+  });
+}
+
+async function parseGallery(text) {
+  const lines = String(text || '').split('\n').map((l) => l.trim()).filter(Boolean);
+  if (lines.length > 12) throw new Error('En fazla 12 görsel eklenebilir.');
+  const out = [];
+  for (const line of lines) {
+    const [src, alt = '', alt_en = ''] = line.split('|').map((x) => x.trim());
+    if (!GALLERY_RE.test(src)) throw new Error(`Geçersiz görsel yolu: "${src}". Yol assets/img/ ile başlamalı, küçük harf olmalı ve .webp/.png/.jpg ile bitmeli.`);
+    let size;
+    try { size = await imageSize(src); } catch (_) { throw new Error(`Görsel bulunamadı: ${src}. Dosyayı repoya ekleyip yayınlandığından emin ol.`); }
+    out.push({ src, w: size.w, h: size.h, alt: alt.slice(0, 200), alt_en: alt_en.slice(0, 200) });
+  }
+  return out;
 }
 
 /** Türkçe karakterleri dönüştürerek URL dostu ad üretir. */

@@ -88,3 +88,6 @@ body.admin { font-size: 14px; line-height: 1.5; }
 .form-section .hint { text-transform: none; color: var(--muted); font-family: var(--font-body); letter-spacing: 0; }
 
 .icon-btn.star[aria-pressed="true"] { color: #d4a72c; }
+.gallery-preview { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; }
+.gallery-preview img { height: 120px; width: auto; border-radius: 8px; border: 1px solid var(--border); flex: 0 0 auto; }
+.field code { font-family: var(--font-mono); font-size: 12px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
