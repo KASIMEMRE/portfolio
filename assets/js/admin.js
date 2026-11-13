@@ -21,13 +21,99 @@ const state = {
 };
 
 const view = $('#view');
-const show = (id) => ['login-view', 'denied-view', 'app-view'].forEach((v) => { $('#' + v).hidden = v !== id; });
+const VIEWS = ['login-view', 'forgot-view', 'reset-view', 'denied-view', 'app-view'];
+const show = (id) => VIEWS.forEach((v) => { $('#' + v).hidden = v !== id; });
+const note = (id, text) => { const el = $(id); el.textContent = text || ''; el.hidden = !text; };
+
+/* =========================================================
+   Şifre sıfırlama bağlantısı (e-postadan gelen)
+   Supabase, bağlantıyı açınca bu sayfaya #access_token=…&type=recovery ile yönlendirir.
+   Jetonlar adres çubuğundan hemen silinir; oturum yalnızca yeni şifre belirlemek için kullanılır.
+   ========================================================= */
+const hashParams = new URLSearchParams(location.hash.slice(1));
+const recoveryTokens = hashParams.get('type') === 'recovery' && hashParams.get('access_token') && hashParams.get('refresh_token')
+  ? { access_token: hashParams.get('access_token'), refresh_token: hashParams.get('refresh_token') }
+  : null;
+const linkError = hashParams.get('error_code') || hashParams.get('error');
+if (recoveryTokens || linkError) history.replaceState(null, '', location.pathname);
+let recoveryMode = !!recoveryTokens;
+
+async function startRecovery() {
+  const { error } = await supabase.auth.setSession(recoveryTokens);
+  if (error) {
+    recoveryMode = false;
+    show('login-view');
+    note('#login-error', 'Sıfırlama bağlantısı geçersiz ya da süresi dolmuş. "Şifremi unuttum" ile yeni bir bağlantı iste.');
+    return;
+  }
+  show('reset-view');
+  $('#r-pass').focus();
+}
+if (recoveryTokens) startRecovery();
+if (linkError) {
+  note('#login-error', linkError === 'otp_expired'
+    ? 'Bu sıfırlama bağlantısı daha önce kullanılmış ya da süresi dolmuş. Bağlantılar tek kullanımlık; "Şifremi unuttum" ile yenisini iste ve yalnızca bir kez aç.'
+    : 'Bağlantı açılamadı. "Şifremi unuttum" ile yeni bir bağlantı iste.');
+}
+
+/* Şifremi unuttum */
+let forgotCooldownUntil = 0;
+$('#forgot-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  note('#forgot-error'); note('#forgot-info');
+  const email = $('#f-email').value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return note('#forgot-error', 'Geçerli bir e-posta adresi gir.');
+  const wait = Math.ceil((forgotCooldownUntil - Date.now()) / 1000);
+  if (wait > 0) return note('#forgot-error', `Yeni bir bağlantı istemek için ${wait} saniye bekle.`);
+  const btn = $('#forgot-form button[type="submit"]');
+  btn.disabled = true; btn.textContent = 'Gönderiliyor…';
+  const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+  btn.disabled = false; btn.textContent = 'Sıfırlama bağlantısı gönder';
+  forgotCooldownUntil = Date.now() + 60 * 1000;
+  if (error && error.status === 429) return note('#forgot-error', 'Kısa süre içinde çok fazla istek gönderildi. Bir dakika sonra tekrar dene.');
+  // Hesabın var olup olmadığını belli etmemek için her durumda aynı mesaj
+  note('#forgot-info', 'Bu e-postaya ait bir hesap varsa sıfırlama bağlantısı gönderildi. Gelen kutunu (ve spam klasörünü) kontrol et; bağlantıyı yalnızca bir kez aç.');
+});
+
+/* Yeni şifre belirle */
+$('#r-show').addEventListener('change', (e) => {
+  ['#r-pass', '#r-pass2'].forEach((id) => { $(id).type = e.target.checked ? 'text' : 'password'; });
+});
+$('#reset-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  note('#reset-error');
+  const p1 = $('#r-pass').value;
+  const p2 = $('#r-pass2').value;
+  if (p1.length < 10) return note('#reset-error', 'Şifre en az 10 karakter olmalı.');
+  if (!/[A-Za-zÇĞİÖŞÜçğıöşü]/.test(p1) || !/[0-9]/.test(p1)) return note('#reset-error', 'Şifre en az bir harf ve bir rakam içermeli.');
+  if (p1 !== p2) return note('#reset-error', 'İki şifre birbiriyle aynı değil.');
+  const btn = $('#reset-form button[type="submit"]');
+  btn.disabled = true; btn.textContent = 'Kaydediliyor…';
+  const { error } = await supabase.auth.updateUser({ password: p1 });
+  btn.disabled = false; btn.textContent = 'Şifreyi kaydet ve panele gir';
+  if (error) {
+    const msg = error.code === 'same_password' ? 'Yeni şifre eskisiyle aynı olamaz.'
+      : error.code === 'weak_password' ? 'Bu şifre çok zayıf ya da daha önce sızdırılmış bir şifre. Başka bir şifre seç.'
+      : 'Şifre kaydedilemedi. Bağlantının süresi dolmuş olabilir; yeni bir sıfırlama bağlantısı iste.';
+    return note('#reset-error', msg);
+  }
+  $('#r-pass').value = ''; $('#r-pass2').value = '';
+  recoveryMode = false;
+  toast('Şifren güncellendi');
+  const { data } = await supabase.auth.getSession();
+  checkAccess(data.session);
+});
 
 /* =========================================================
    Kimlik doğrulama
    ========================================================= */
 async function checkAccess(session) {
-  if (!session) { show('login-view'); return; }
+  if (recoveryMode) return;
+  if (!session) {
+    // "Şifremi unuttum" ekranındayken oturum değişikliği kullanıcıyı geri atmasın
+    if ($('#forgot-view').hidden) show('login-view');
+    return;
+  }
   const { data, error } = await supabase.from('admins').select('email').limit(1);
   if (error || !data || data.length === 0) { show('denied-view'); return; }
   show('app-view');
@@ -83,9 +169,17 @@ document.addEventListener('click', async (e) => {
     await supabase.auth.signOut();
     show('login-view');
   }
+  if (e.target.closest('[data-action="show-forgot"]')) {
+    $('#f-email').value = $('#l-email').value.trim();
+    note('#forgot-error'); note('#forgot-info');
+    show('forgot-view'); $('#f-email').focus();
+  }
+  if (e.target.closest('[data-action="show-login"]')) { show('login-view'); $('#l-email').focus(); }
 });
 
 supabase.auth.onAuthStateChange((event, session) => {
+  // Sıfırlama bağlantısıyla gelindiyse yeni şifre belirlenene kadar panele geçilmez
+  if (recoveryMode) return;
   if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'INITIAL_SESSION') {
     // Supabase çağrılarını callback dışına ertele (kilitlenmeyi önler)
     setTimeout(() => checkAccess(session), 0);

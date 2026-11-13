@@ -25,8 +25,40 @@
       <label class="field" for="l-email">E-posta<input id="l-email" type="email" autocomplete="username" required></label>
       <label class="field" for="l-pass">Şifre<input id="l-pass" type="password" autocomplete="current-password" required></label>
       <p id="login-error" class="form-error" role="alert" hidden></p>
+      <p id="login-info" class="form-note" role="status" hidden></p>
       <button type="submit" class="btn btn-green">Giriş yap</button>
-      <a href="index.html" class="muted" style="font-size: 13px">← Siteye dön</a>
+      <div class="login-links">
+        <button type="button" class="link-btn" data-action="show-forgot">Şifremi unuttum</button>
+        <a href="index.html" class="muted">← Siteye dön</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Şifremi unuttum -->
+  <div id="forgot-view" class="login-wrap" hidden>
+    <form id="forgot-form" class="login-card" novalidate>
+      <span class="logo">&lt;<span>KE</span> /&gt;</span>
+      <h1>Şifreni sıfırla</h1>
+      <p class="muted">Admin e-postanı yaz; sana tek kullanımlık bir sıfırlama bağlantısı gönderelim. Bağlantıyı bu cihazda ve bu tarayıcıda aç.</p>
+      <label class="field" for="f-email">E-posta<input id="f-email" type="email" autocomplete="username" required></label>
+      <p id="forgot-error" class="form-error" role="alert" hidden></p>
+      <p id="forgot-info" class="form-note" role="status" hidden></p>
+      <button type="submit" class="btn btn-green">Sıfırlama bağlantısı gönder</button>
+      <div class="login-links"><button type="button" class="link-btn" data-action="show-login">← Girişe dön</button></div>
+    </form>
+  </div>
+
+  <!-- Yeni şifre belirle (e-postadaki bağlantıdan gelince) -->
+  <div id="reset-view" class="login-wrap" hidden>
+    <form id="reset-form" class="login-card" novalidate>
+      <span class="logo">&lt;<span>KE</span> /&gt;</span>
+      <h1>Yeni şifre belirle</h1>
+      <p class="muted">En az 10 karakter; harf ve rakam içersin. Başka bir yerde kullanmadığın bir şifre seç.</p>
+      <label class="field" for="r-pass">Yeni şifre<input id="r-pass" type="password" autocomplete="new-password" minlength="10" required></label>
+      <label class="field" for="r-pass2">Yeni şifre (tekrar)<input id="r-pass2" type="password" autocomplete="new-password" minlength="10" required></label>
+      <label class="check" for="r-show"><input id="r-show" type="checkbox">Şifreyi göster</label>
+      <p id="reset-error" class="form-error" role="alert" hidden></p>
+      <button type="submit" class="btn btn-green">Şifreyi kaydet ve panele gir</button>
     </form>
   </div>
 
